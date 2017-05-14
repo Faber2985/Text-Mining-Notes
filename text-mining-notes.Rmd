@@ -1,0 +1,80 @@
+---
+title: "Text Mining Notes"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The notes you are reading now, are the one I took during the course I took on Datacamp on text mining.
+
+[Link on Datacamp](https://www.datacamp.com/courses/intro-to-text-mining-bag-of-words)
+
+The course is quite nice and well structure, and has a lot of practical example. But it goes quite fast,
+so I tend to forget the right syntax, or the right function name that has been used in the examples. 
+So I tought to put them together in a series of examples that one can read, try and use
+as a reference.
+
+As a dataset we will use tweets. Since I have not found the original csv files from the course, I decided
+I could download some real tweets by myself. This could prove an interesting project and could give some
+interesting insights if we download the right tweets. To do this I followed the instructions on this websites
+
+[Link on twitter download 1](https://www.credera.com/blog/business-intelligence/twitter-analytics-using-r-part-1-extract-tweets/)
+[Link on twitter download 2](http://thinktostart.com/twitter-authentification-with-r/)
+
+# Let's get the tweets
+Let's load the necessary libraries
+```{r}
+library("devtools")
+library("twitteR")
+library("ROAuth")
+```
+
+Now we need to save our keys
+
+```{r}
+
+secrets <- read.csv("/Users/umberto/Documents/Passwords and Secrets/twitter-keys.csv", stringsAsFactors = FALSE, header = TRUE, sep =",")
+
+api_key <- secrets$api_key
+api_secret <- secrets$api_secret
+access_token <- secrets$access_token
+access_token_secret <- secrets$access_token_secret
+ 
+
+setup_twitter_oauth(api_key,api_secret)
+```
+
+
+```{r}
+search.string <- "#coffee"
+no.of.tweets <- 1000
+
+tweets <- searchTwitter(search.string, n=no.of.tweets, lang="en")
+```
+Now we need to access the text of the tweets. So we do it in this way
+```{r}
+coffee_tweets = sapply(tweets, function(t) t$getText())
+head(coffee_tweets)
+```
+It is interested to see how many parameters we get from the search
+```{r}
+str(tweets[[1]])
+```
+So there is quite some possibilities here. But we are not actually interested in twitters now, but just in the text `tweetsText`. 
+(check for example as reference this [stackoverflow post](http://stackoverflow.com/questions/14549305/searchtwitter-timestamps)).
+
+# Let's start with text mining
+To do text mining one of the most used library (and the one I will use here) is `tm`.
+```{r}
+library("tm")
+```
+First we need to create a vector of texts
+```{r}
+coffee_source <- VectorSource(coffee_tweets)
+```
+
+
