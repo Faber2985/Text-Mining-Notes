@@ -1,6 +1,6 @@
 ---
 title: "Text Mining Notes"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -574,13 +574,13 @@ dim(coffee_tdm)
 ```
 Let's remove some terms
 ```{r}
-coffee_tdm1 <- removeSparseTerms(coffee_tdm, sparse = 0.95)
+coffee_tdm1 <- removeSparseTerms(coffee_tdm, sparse = 0.97)
 dim(coffee_tdm1)
 ```
-Let's see a dendogram now
+Let's see a dendrogram now
 ```{r}
 coffee_tdm1_m <- as.matrix(coffee_tdm1)
-coffee_tdm1_df <- as.data.frame(coffee_tdm1_m)
+coffee_tdm1_df <- as.data.frame(coffee_tdm1_m)  
 coffee_dist <- dist(coffee_tdm1_df)
 
 coffee_hc <- hclust(coffee_dist)
