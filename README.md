@@ -1,2 +1,2 @@
 # Text-Mining-Notes
-This repository contains my note on text mining and my experiments.
+This repository contains my notes on text mining and my experiments.
