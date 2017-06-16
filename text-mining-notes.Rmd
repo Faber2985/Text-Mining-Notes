@@ -9,16 +9,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-The notes you are reading now, are the notes I took during the course I took on Datacamp on text mining.
+The notes you are reading now are what I learned from courses, projects and other experts. I tried to give a structured overview of text mining programming in R. My goal is not to give a theoretical overview of text mining but to give practical examples with real code and real data.
 
-[Link on Datacamp](https://www.datacamp.com/courses/intro-to-text-mining-bag-of-words)
 
-The course is quite nice and well structured, and has a lot of practical examples. But it goes quite fast,
-so I tend to forget the right syntax, or the right function name that has been used in the examples. 
-So I tought to put them together in a series of examples that one can read, try and use
-as a reference.
-
-As a dataset we will use tweets. Since I have not found the original csv files from the course, I decided I could download some real tweets by myself. This could prove an interesting project and could give some interesting insights if we download the right tweets. To do this I followed the instructions on this websites
+As a dataset we will use tweets. I decided I could download some real tweets by myself. This could prove an interesting challenge and could give some interesting insights if we download the right tweets. To do this I followed the instructions on this websites
 
 [Link on twitter download 1](https://www.credera.com/blog/business-intelligence/twitter-analytics-using-r-part-1-extract-tweets/)
 [Link on twitter download 2](http://thinktostart.com/twitter-authentification-with-r/)
@@ -31,7 +25,7 @@ library("twitteR")
 library("ROAuth")
 ```
 
-Now we need to save our keys
+Now to be able to download tweets you need to have a twitter account and authorize it (using special generated keys). To know how follow the instructions you can found on the page linked above. I saved my keys in a file that I access to read it. You don't have to do that, but I wanted to have a working piece of code that I can run and at the same time publish. Again, use google to find out how you can do it differently. You will understand if I don't want to put my keys here ;-)
 
 ```{r}
 
@@ -48,14 +42,16 @@ setup_twitter_oauth(api_key,api_secret)
 
 ## Coffee Tweets
 
+Let's now see what we can find out on Coffee. Let's find tweets that have the hashtag Coffee (`#Coffee`) in them and let's exclude the retweets, since they will falsify our results since they contains almost always the same exact text with RT at the beginning.
+
 ```{r}
-search.string <- "#coffee"
+search.string <- "#coffee exclude:retweets"
 no.of.tweets <- 1000
 
 c_tweets <- searchTwitter(search.string, n=no.of.tweets, lang="en")
 ```
 Now we need to access the text of the tweets. So we do it in this way (we also need to clean up the tweets from special
-characters that for now we don't need, like emoticons with teh `sapply` function.)
+characters that for now we don't need, like emoticons with the `sapply` function.)
 ```{r}
 coffee_tweets = sapply(c_tweets, function(t) t$getText())
 
@@ -72,13 +68,13 @@ So there is quite some possibilities here. But we are not actually interested in
 
 ## Tea tweets
 
-Since we are going to compare corpora of text, we need a second set of tweets, and, following the example of the course,
+Since we are going to compare corpora of text later on, we need a second set of tweets.
 I decided to download the first 1000 tweets on Tea
 
 ## Tea Tweets
 
 ```{r}
-search.string <- "#tea"
+search.string <- "#tea exclude:retweets"
 no.of.tweets <- 1000
 
 t_tweets <- searchTwitter(search.string, n=no.of.tweets, lang="en")
@@ -122,8 +118,6 @@ tea_corpus[[15]][1]
 Now that I how to make a corpus, I can focus on cleaning, or preprocessing, the text. 
 In bag of words text mining, cleaning helps aggregate terms. For example, it may make sense that the words "miner", "mining" and "mine" should be considered one term. Specific preprocessing steps will vary based on the project. For example, the words used in tweets are vastly different than those used in legal documents, so the cleaning process can also be quite different. (Text Source: Datacamp)
 
-From Data Source
-
 Common preprocessing functions include:
 
 - tolower(): Make all characters lowercase
@@ -131,7 +125,7 @@ Common preprocessing functions include:
 - removeNumbers(): Remove numbers
 - stripWhitespace(): Remove excess whitespace
 
-Note that tolower() is part of base R, while the other three functions come from the tm package. Going forward, we'll load the tm and qdap for you when they are needed. Every time we introduce a new package, we'll have you load it the first time.
+Note that tolower() is part of base R, while the other three functions come from the tm package. Going forward, we'll load the tm and qdap for you when they are needed. 
 
 The **qdap** package offers other text cleaning functions. Each is useful in its own way and is particularly powerful when combined with the others.
 
@@ -153,6 +147,7 @@ You can use the following command to remove stopwords
   
 ## Stemming
 
+I won't go into stemming here but I tought is worthwile mentioning it.
 Here is an example of stemming
 
 ```{r}
@@ -175,20 +170,21 @@ complete_text
 
 # Clean the Corpus
 
+Let's get back to our set of tweets. Let's start cleaning it.
 To clean the Corpus we can define a function that applies several functions on the corpus
 ```{r}
 clean_corpus <- function(corpus){
   corpus <- tm_map(corpus, stripWhitespace)
   corpus <- tm_map(corpus, removePunctuation)
   corpus <- tm_map(corpus, content_transformer(tolower))
-  corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "mug", "coffee"))
+  corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "mug", "coffee", "amp","now","cafe"))
   return(corpus)
 }
 ```
 
 
 
-Then we can try to apply it on our corpus
+Then we can try to apply it on our coffee corpus
 ```{r}
 clean_corp <- clean_corpus(coffee_corpus)
 ```
@@ -200,8 +196,7 @@ and the original one
 ```{r}
 coffee_corpus[[227]][1]
 ```
-So we have removed special characters, punctuation and so on. Not all the words make much sense really (for example twitter usernames) but it should
-not be a problem since we don't expect to see them very often in our corpus.
+So we have removed special characters, punctuation and so on. Not all the words make much sense really (for example twitter usernames) but it should not be a problem since we don't expect to see them very often in our corpus.
 
 ## Make a document-term matrix
 
@@ -220,7 +215,7 @@ coffee_m <- as.matrix(coffee_dtm)
 dim(coffee_m)
 
 # Review a portion of the matrix
-coffee_m[148:150, 2587: 2590]
+coffee_m[1:10, 253: 259]
 ```
 
 ## Make a document-term matrix (DTM)
@@ -245,16 +240,13 @@ coffee_m[2587:2590, 148:150]
 
 ## Frequent terms with tm
 
-(source Datacamp)
-Now that you know how to make a term-document matrix, as well as its transpose, the document-term matrix, we will use it as the basis for some analysis. In order to analyze it we need to change it to a simple matrix like we did in chapter 1 using as.matrix.
+Now that you know how to make a term-document matrix, as well as its transpose, the document-term matrix, we will use it as the basis for some analysis. In order to analyze it we need to change it to a simple matrix.
 
 Calling `rowSums()` on your newly made matrix aggregates all the terms used in a passage. Once you have the `rowSums()`, you can `sort()` them with `decreasing = TRUE`, so you can focus on the most common terms.
 
-Lastly, you can make a barplot() of the top 5 terms of term_frequency with the following code.
+Lastly, you can make a barplot() of the top 5 terms of term_frequency with the following code (we will make something prettier later on with ggplot2).
 
     barplot(term_frequency[1:5], col = "#C0DE25")
-
-Of course, you could take our ggplot2 course to learn how to customize the plot even more... :)
 
 So let's try with out coffee tweets
 ```{r}
@@ -293,7 +285,7 @@ tf10 <- mutate(tf10, words = factor(words, words))
 ggplot(tf10, aes(x = tf10$words , y = tf10$term_frequency   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
 ```
 
-Note that the following command don't work from Rstudio if you want to use `knitr`. So the solution is to do 
+Note that the knitr button command don't work from Rstudio if you want to use `knitr`. So the solution is to do 
 it from the console with the following commands
 ```{r, eval=FALSE}
 library(rmarkdown)
@@ -306,7 +298,7 @@ library(rJava)
 library(qdap)
 ```
 
-Let's build a word frequency plot with `qdap` library
+Let's build a word frequency plot with `qdap` library (note that we are not working with our cleaned up corpus, and therefore we will see different words).
 
 ```{r}
 frequency <- freq_terms(coffee_tweets, top = 10, at.least = 3, stopwords = "Top200Words")
@@ -315,10 +307,10 @@ frequency <- mutate(frequency, WORD = factor(WORD, WORD))
 
 ggplot(frequency, aes(x = frequency$WORD , y = frequency$FREQ   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
 ```
-Now let's remove more stopwords
+Now let's remove more stopwords (now it looks similar to what we obtained at the beginning)
 
 ```{r}
-frequency2 <- freq_terms(coffee_tweets, top = 10, at.least = 3, stopwords = tm::stopwords("english"))
+frequency2 <- freq_terms(coffee_tweets, top = 10, at.least = 3, stopwords = c(tm::stopwords("english"),"coffee","httpstco","amp","now","cafe"))
 
 frequency2 <- mutate(frequency2, WORD = factor(WORD, WORD))
 
@@ -327,10 +319,11 @@ ggplot(frequency2, aes(x = frequency2$WORD , y = frequency2$FREQ   )) + geom_bar
 
 ## Wordclouds
 
+A very cool way of visualizing frequency of words, are the "wordcloud". You will always get a wow effect when showing it to people.
+To build beatiful clouds you will need the library `wordcloud`. Here is an example
 ```{r}
 library(wordcloud)
-```
-```{r}
+
 term_frequency[1:10]
 word_freqs <- data.frame(term = names(term_frequency), num = term_frequency)
 wordcloud(word_freqs$term, word_freqs$num, max.words = 100, colors = "red")
@@ -371,6 +364,7 @@ wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 50, colors = "red")
 wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = c("grey80", "darkgoldenrod1", "tomato"))
 ```
 
+Now let's improve even more on the colors. To do that we will need to use RColorBrewer.
 RColorBrewer color schemes are organized into three categories:
 
 - Sequential: Colors ascend from light to dark in sequence
@@ -378,7 +372,6 @@ RColorBrewer color schemes are organized into three categories:
 - Diverging: Colors have two distinct color spectra with lighter colors in between
 
 To change the colors parameter of the `wordcloud()` function you can use a select a palette from `RColorBrewer` such as "Greens". The function `display.brewer.all()` will list all predefined color palettes. More information on ColorBrewer (the framework behind RColorBrewer) is available on its [website](http://www.colorbrewer.org/).
-
 (Source: datacamp)
 
 The function `brewer.pal()` allows you to select colors from a palette. Specify the number of distinct colors needed (e.g. 8) and the predefined palette to select from (e.g. "Greens"). Often in word clouds, very faint colors are washed out so it may make sense to remove the first couple from a brewer.pal() selection, leaving only the darkest.
@@ -391,8 +384,6 @@ Here's an example:
 Then just add that object to the wordcloud() function.
 
     wordcloud(chardonnay_freqs$term, chardonnay_freqs$num, max.words = 100, colors = green_pal)
-
-(Source: datacamp)
 
 The command `display.brewer.all()` will display all palettes. Is a very cool command
 ```{r}
@@ -410,13 +401,14 @@ And now we can create the wordcloud woith this palette
 wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = purple_orange)
 ```
 
+Weel it seems that people talking about coffee are talking also about "morning". Make sense. When is Coffee important if not on the morning?
+
 Sometimes not all the words can be plotted. In this case the only solutions are to reduce the number
 of words or to reduce the scale of the words themselves. For example
 ```{r}
 wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = purple_orange, scale = c(2,0.3))
 ```
 
-Now all the words are in the plots.
 
 ## Wordclouds with bigrams
 Now sometimes single words don't tell the entire story and is interesting to do the same plot with
@@ -427,8 +419,8 @@ library(RWeka)
 ```
 Then we need to get the couples of words (note that the definition give below will give you **only** bigrams, and not single words anymore).
 ```{r}
-BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
-tdm.bigram <- TermDocumentMatrix(coffee_corpus, control = list(tokenize = BigramTokenizer))
+BigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 2))
+tdm.bigram <- TermDocumentMatrix(clean_corp, control = list(tokenize = BigramTokenizer))
 ```
 Then we can get the frequencies of the bigrams
 ```{r}
@@ -441,23 +433,28 @@ Now we can plot the wordcloud
 wordcloud(freq.df$word, freq.df$freq, max.words = 50, random.order = F, colors = purple_orange, scale = c(4,0.7))
 ```
 
-We need of course first to do a cleanup of the bigrams list. But that is something that goes beyond the notes I am writing.
+Apparently not many bigrams appear so frequently. The only one is "good morning". It makes again sense...
+
+We need of course first to do a different cleanup of the bigrams list. But that is something that goes beyond the notes I am writing.
 An important point is that if you remove all stop words like "not" you may loose important informations for bigrams (like negations).
 
 ## Trigrams
 
-Just as a reference here is the code to do wordclouds with trigrams
+Just as a reference here is the code to do wordclouds with trigrams and bigrams
 
 ```{r}
-TrigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 3, max = 3))
-tdm.trigram <- TermDocumentMatrix(coffee_corpus, control = list(tokenize= TrigramTokenizer))
+TrigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 3))
+tdm.trigram <- TermDocumentMatrix(clean_corp, control = list(tokenize= TrigramTokenizer))
 
 freq <- sort(rowSums(as.matrix(tdm.trigram)), decreasing = TRUE)
 freq.df <- data.frame(word = names(freq), freq= freq)
 head(freq.df)
 
 ```
-
+```{r}
+wordcloud(freq.df$word, freq.df$freq, max.words = 40, random.order = F, colors = purple_orange, scale = c(3,0.7))
+```
+Words are long so not all could be written in the plot. You have to choose between something that is not readable and something that has less words...
 
 # Common Words between Corpora
 
@@ -482,7 +479,7 @@ clean_corpus <- function(corpus){
   corpus <- tm_map(corpus, stripWhitespace)
   corpus <- tm_map(corpus, removePunctuation)
   corpus <- tm_map(corpus, content_transformer(tolower))
-  corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "mug", "coffee", "tea"))
+  corpus <- tm_map(corpus, removeWords, c(stopwords("en"), "mug", "coffee", "tea", "amp", "cup"))
   return(corpus)
 }
 ```
@@ -554,14 +551,14 @@ In a network graph, the circles are called nodes and represent individual terms,
 
 For the over-caffeinated text miner, qdap provides a shorcut for making word networks. The word_network_plot() and word_associate() functions both make word networks easy!
 ```{r}
-word_associate(coffee_tweets, match.string = c("monday"), 
-               stopwords = c(Top200Words, "coffee", "mug"), 
+word_associate(coffee_tweets, match.string = c("books"), 
+               stopwords = Top200Words, 
                network.plot = TRUE)
 ```
 
 # Distance Matrix and Dendograms
 
-Now that you understand the steps in making a dendrogram, you can apply them to text. But first, you have to limit the number of words in your TDM using removeSparseTerms() from tm. Why would you want to adjust the sparsity of the TDM/DTM?
+First let's limit the number of words in your TDM using removeSparseTerms() from tm. Why would you want to adjust the sparsity of the TDM/DTM?
 
 TDMs and DTMs are sparse, meaning they contain mostly zeros. Remember that 1000 tweets can become a TDM with over 3000 terms! You won't be able to easily interpret a dendrogram that is so cluttered, especially if you are working on more text.
 
@@ -618,11 +615,12 @@ To use findAssocs() pass in a TDM or DTM, the search term, and a minimum correla
 
 ```{r}
 # Create associations
-associations <- findAssocs(coffee_tdm, "mug", 0.2)
+associations <- findAssocs(coffee_tdm, "starbucks", 0.2)
 
 # View the venti associations
 print(associations)
 ```
+As you can see, some more serious cleaning of the text should be done to gain real interesting insights.
 
 ```{r}
 library(ggthemes)
@@ -641,6 +639,8 @@ ggplot(associations_df, aes(y = associations_df[, 1])) +
 
 
 # Similarity matrix
+Another very useful thing to calculate is the similarity matrix between tweets. I won't explain here what it is, but show how to calculate it.
+I will use the cosine distance here (note that the following piece of code may take sometime, since it must calculate one million of values)
 
 ```{r}
 require(proxy)
@@ -664,14 +664,14 @@ cosine_dist_mat <- crossprod_simple_triplet_matrix(coffee_tdm)/(sqrt(col_sums(co
 ```
 
 ```{r}
-cosine_dist_mat[1:5,1:5]
+cosine_dist_mat[1:15,1:15]
 ```
-Tweets 2 and 3 have a similarity score of 0.92, so a very high one. Let's check them
+Tweets 8 and 9 have a similarity score of 0.21. Let's check them
 ```{r}
-print(coffee_tweets[[2]])
-print(coffee_tweets[[3]])
+print(coffee_tweets[[8]])
+print(coffee_tweets[[9]])
 ```
-They are indeed very similar being one a retweet of the other.
+
 
 # Bag of words
 ```{r}
@@ -693,23 +693,72 @@ str(y)
 y
 ```
 ```{r}
-print(coffee_tweets[[209]])
-print(coffee_tweets[[202]])
+print(coffee_tweets[[659]])
+print(coffee_tweets[[292]])
 ```
+So really very similar...
 
 and we can extract the values of the matrix with
 ```{r}
 cosine_dist_mat[y]
 ```
 
-# Another way of doing TD-IDF
+# Another way of doing TF-IDF
+
+Another way of doing TF-IDF is the following
 ```{r}
 dtm <- DocumentTermMatrix(coffee_corpus)
 dtm_tfxidf <- weightTfIdf(dtm)
 inspect(dtm_tfxidf[1:10, 1001:1010])
 ```
 
+## Keep Tweets Metadata
+Depending on what you are trying to accomplish, you may want to keep metadata about the document when you create a TDM or DTM. This metadata can be incorporated into the corpus fairly easily by creating a readerControl list and applying it to a DataframeSource when calling `VCorpus()`.
+
+You will need to know the column names of the data frame containing the metadata to be captured. The `names()` function is helpful for this.
+
+To capture the text column of the coffee tweets text along with a metadata column of unique numbers called num you would use the code below.
+
+    custom_reader <- readTabular(
+      mapping = list(content = "text", id = "num")
+    )
+    text_corpus <- VCorpus(
+      DataframeSource(tweets), 
+      readerControl = list(reader = custom_reader)
+    )
+
+An example is
+```{r}
+
+df <- do.call("rbind", lapply(c_tweets, as.data.frame))
+
+df$text <- sapply(df$text,function(row) iconv(row, "latin1", "ASCII", sub=""))
+
+
+# Add author to custom reading list
+custom_reader <- readTabular(mapping = list(content = "text", 
+                                            id = "id",
+                                            author = "screenName",
+                                            date = "created"
+                                            ))
+
+# Make corpus with custom reading
+text_corpus <- VCorpus(DataframeSource(df), readerControl = list(reader = custom_reader))
+
+# Clean corpus
+text_corpus <- clean_corpus(text_corpus)
+
+# Print data
+text_corpus[[1]][1]
+
+# Print metadata
+text_corpus[[1]][2]
+```
+
+
 ## Clustering
+
+The unsupervised clustering is still a work in progress. Will be updated soon.
 
 ```{r}
 m <- as.matrix(dtm_tfxidf)
