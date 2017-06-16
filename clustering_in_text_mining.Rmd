@@ -1,0 +1,37 @@
+---
+title: "Clustering in tweets"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Clustering
+
+This code will not work as it is. It needs to create all the necessary matrices (like `dtm_tfxidf`)
+
+The unsupervised clustering is still a work in progress. Will be updated soon.
+
+```{r}
+m <- as.matrix(dtm_tfxidf)
+rownames(m) <- 1:nrow(m)
+
+### don't forget to normalize the vectors so Euclidean makes sense
+norm_eucl <- function(m) m/apply(m, MARGIN=1, FUN=function(x) sum(x^2)^.5)
+m_norm <- norm_eucl(m)
+
+
+### cluster into 10 clusters
+cl <- kmeans(m_norm, 10)
+table(cl$cluster)
+```
+```{r}
+dtm[cl$cluster == 1,]
+
+findFreqTerms(dtm[cl$cluster==7,], 1)
+inspect(coffee_corpus[which(cl$cluster==7)])
+```
+
