@@ -51,11 +51,14 @@ no.of.tweets <- 1000
 c_tweets <- searchTwitter(search.string, n=no.of.tweets, lang="en")
 ```
 Now we need to access the text of the tweets. So we do it in this way (we also need to clean up the tweets from special
-characters that for now we don't need, like emoticons with the `sapply` function.)
+characters that for now we don't need, like emoticons with the `sapply` function.). At the same time let's remove all web links from the tweets, since we are not interested in having them in our wordclouds or networks.
 ```{r}
 coffee_tweets = sapply(c_tweets, function(t) t$getText())
 
 coffee_tweets <- sapply(coffee_tweets,function(row) iconv(row, "latin1", "ASCII", sub=""))
+names(coffee_tweets) <- NULL
+
+coffee_tweets <- gsub("?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", coffee_tweets)
 
 head(coffee_tweets)
 ```
@@ -85,6 +88,9 @@ characters that for now we don't need, like emoticons with teh `sapply` function
 tea_tweets = sapply(t_tweets, function(t) t$getText())
 
 tea_tweets <- sapply(tea_tweets,function(row) iconv(row, "latin1", "ASCII", sub=""))
+names(tea_tweets) <- NULL
+
+tea_tweets <- gsub("?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tea_tweets)
 
 head(tea_tweets)
 ```
@@ -666,10 +672,10 @@ cosine_dist_mat <- crossprod_simple_triplet_matrix(coffee_tdm)/(sqrt(col_sums(co
 ```{r}
 cosine_dist_mat[1:15,1:15]
 ```
-Tweets 8 and 9 have a similarity score of 0.21. Let's check them
+Tweets 14 and 4 seems similar. Let's check them
 ```{r}
-print(coffee_tweets[[8]])
-print(coffee_tweets[[9]])
+print(coffee_tweets[[14]])
+print(coffee_tweets[[5]])
 ```
 
 
@@ -755,28 +761,4 @@ text_corpus[[1]][1]
 text_corpus[[1]][2]
 ```
 
-
-## Clustering
-
-The unsupervised clustering is still a work in progress. Will be updated soon.
-
-```{r}
-m <- as.matrix(dtm_tfxidf)
-rownames(m) <- 1:nrow(m)
-
-### don't forget to normalize the vectors so Euclidean makes sense
-norm_eucl <- function(m) m/apply(m, MARGIN=1, FUN=function(x) sum(x^2)^.5)
-m_norm <- norm_eucl(m)
-
-
-### cluster into 10 clusters
-cl <- kmeans(m_norm, 10)
-table(cl$cluster)
-```
-```{r}
-dtm[cl$cluster == 1,]
-
-findFreqTerms(dtm[cl$cluster==7,], 1)
-inspect(coffee_corpus[which(cl$cluster==7)])
-```
 
