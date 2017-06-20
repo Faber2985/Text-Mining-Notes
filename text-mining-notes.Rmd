@@ -58,7 +58,7 @@ coffee_tweets = sapply(c_tweets, function(t) t$getText())
 coffee_tweets <- sapply(coffee_tweets,function(row) iconv(row, "latin1", "ASCII", sub=""))
 names(coffee_tweets) <- NULL
 
-coffee_tweets <- gsub("?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", coffee_tweets)
+coffee_tweets <- gsub("\\s?(f|ht)(tp)(s?)(://)([^\\.]*)[\\.|/](\\S*)", "", coffee_tweets)
 
 head(coffee_tweets)
 ```
