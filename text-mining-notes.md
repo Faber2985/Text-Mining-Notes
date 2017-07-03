@@ -8,7 +8,9 @@ The notes you are reading now are what I learned from courses, projects and othe
 
 As a dataset we will use tweets. I decided I could download some real tweets by myself. This could prove an interesting challenge and could give some interesting insights if we download the right tweets. To do this I followed the instructions on this websites
 
-[Link on twitter download 1](https://www.credera.com/blog/business-intelligence/twitter-analytics-using-r-part-1-extract-tweets/) [Link on twitter download 2](http://thinktostart.com/twitter-authentification-with-r/)
+[Link on twitter download 1](https://www.credera.com/blog/business-intelligence/twitter-analytics-using-r-part-1-extract-tweets/)
+
+[Link on twitter download 2](http://thinktostart.com/twitter-authentification-with-r/)
 
 Let's get the tweets
 ====================
@@ -24,7 +26,8 @@ library("ROAuth")
 Now to be able to download tweets you need to have a twitter account and authorize it (using special generated keys). To know how follow the instructions you can found on the page linked above. I saved my keys in a file that I access to read it. You don't have to do that, but I wanted to have a working piece of code that I can run and at the same time publish. Again, use google to find out how you can do it differently. You will understand if I don't want to put my keys here ;-)
 
 ``` r
-secrets <- read.csv("/Users/umberto/Documents/Passwords and Secrets/twitter-keys.csv", stringsAsFactors = FALSE, header = TRUE, sep =",")
+secrets <- read.csv("/Users/umberto/Documents/Passwords and Secrets/twitter-keys.csv", 
+                    stringsAsFactors = FALSE, header = TRUE, sep =",")
 
 api_key <- secrets$api_key
 api_secret <- secrets$api_secret
@@ -62,12 +65,12 @@ coffee_tweets <- gsub("\\s?(f|ht)(tp)(s?)(://)([^\\.]*)[\\.|/](\\S*)", "", coffe
 head(coffee_tweets)
 ```
 
-    ## [1] "Did you know we make #Coffee? @dilorenzocaffe \n\n\n\n#doughboxdiner #doughbox #coffeetime..."    
-    ## [2] "The latest The luv-my-latte Daily! Thanks to @LuckyChandraA @nuxvomo @whizztips #coffee #food"    
-    ## [3] "#Coffee Roasts Guide - via @nationalcoffee "                                                      
-    ## [4] "Anyone for a cavacinno?  #cavalierkingcharlsespaniel #SundayMorning #coffee #dogsoftwitter"       
-    ## [5] "Want to know more about the #CafeRacer? Watch this space! #video #coffee #wearesanremo"           
-    ## [6] "...Lowkey but high-key wanting or needing a cup of coffee rn... #CoffeeLover #coffee #CoffeeorDie"
+    ## [1] "The latest Mo's Coffee News! Thanks to @PoorLilItGirl @BloggersWales @kuldeepnegi80 #coffee #monday"               
+    ## [2] "#Abraaj Group to buy #African #coffee chain #Java House - #GoogleAlerts"                                           
+    ## [3] "Cartoon businessman office worker quickly runs to work with coffee #artoon #BusinessMan #business #coffee #office" 
+    ## [4] "@RealSeanatello @ABEducational @smgaillard @Teach4SpclNeeds @LennonCorey @noasbobs @MaryHadley8 @weknowteaching"   
+    ## [5] "Breakfast in the Quarter at cafeenvie ! #bagelandlox #coffee #NOLA"                                                
+    ## [6] "It's busy at Bunde's this morning. #Coffee time.  #southhaven #PureMichigan #LakeshoreRealtor #Lakeshoresfinest #S"
 
 It is interested to see how many parameters we get from the search
 
@@ -76,28 +79,28 @@ str(c_tweets[[1]])
 ```
 
     ## Reference class 'status' [package "twitteR"] with 17 fields
-    ##  $ text         : chr "Did you know we make #Coffee? @dilorenzocaffe \n\n<U+2615><U+FE0F><U+2615><U+FE0F><U+2615><U+FE0F><U+2615><U+FE"| __truncated__
+    ##  $ text         : chr "The latest Mo's Coffee News! https://t.co/KIdTRIClBG Thanks to @PoorLilItGirl @BloggersWales @kuldeepnegi80 #coffee #monday"
     ##  $ favorited    : logi FALSE
     ##  $ favoriteCount: num 0
     ##  $ replyToSN    : chr(0) 
-    ##  $ created      : POSIXct[1:1], format: "2017-06-18 07:18:06"
+    ##  $ created      : POSIXct[1:1], format: "2017-07-03 14:26:59"
     ##  $ truncated    : logi FALSE
     ##  $ replyToSID   : chr(0) 
-    ##  $ id           : chr "876338214482714624"
+    ##  $ id           : chr "881881964743204865"
     ##  $ replyToUID   : chr(0) 
-    ##  $ statusSource : chr "<a href=\"http://www.facebook.com/twitter\" rel=\"nofollow\">Facebook</a>"
-    ##  $ screenName   : chr "DoughboxDiner"
+    ##  $ statusSource : chr "<a href=\"http://paper.li\" rel=\"nofollow\">Paper.li</a>"
+    ##  $ screenName   : chr "MoLovesCoffee"
     ##  $ retweetCount : num 0
     ##  $ isRetweet    : logi FALSE
     ##  $ retweeted    : logi FALSE
     ##  $ longitude    : chr(0) 
     ##  $ latitude     : chr(0) 
     ##  $ urls         :'data.frame':   1 obs. of  5 variables:
-    ##   ..$ url         : chr "https://t.co/qmI8pfixzC"
-    ##   ..$ expanded_url: chr "http://fb.me/EczCrm4n"
-    ##   ..$ display_url : chr "fb.me/EczCrm4n"
-    ##   ..$ start_index : num 112
-    ##   ..$ stop_index  : num 135
+    ##   ..$ url         : chr "https://t.co/KIdTRIClBG"
+    ##   ..$ expanded_url: chr "http://paper.li/MoLovesCoffee/1309526832?edition_id=ab1660d0-5ffb-11e7-afd2-0cc47a0d15fd"
+    ##   ..$ display_url : chr "paper.li/MoLovesCoffee/<U+2026>"
+    ##   ..$ start_index : num 29
+    ##   ..$ stop_index  : num 52
     ##  and 53 methods, of which 39 are  possibly relevant:
     ##    getCreated, getFavoriteCount, getFavorited, getId, getIsRetweet,
     ##    getLatitude, getLongitude, getReplyToSID, getReplyToSN, getReplyToUID,
@@ -109,7 +112,7 @@ str(c_tweets[[1]])
     ##    setStatusSource, setText, setTruncated, setUrls, toDataFrame,
     ##    toDataFrame#twitterObj
 
-So there is quite some possibilities here. But we are not actually interested in twitters now, but just in the text `tweetsText`. (check for example as reference this [stackoverflow post](http://stackoverflow.com/questions/14549305/searchtwitter-timestamps)).
+So there is quite some possibilities here. But we are not actually interested in that here, but just in the text `tweetsText`. (check for example as reference this [stackoverflow post](http://stackoverflow.com/questions/14549305/searchtwitter-timestamps)).
 
 Tea tweets
 ----------
@@ -126,7 +129,7 @@ no.of.tweets <- 1000
 t_tweets <- searchTwitter(search.string, n=no.of.tweets, lang="en")
 ```
 
-Now we need to access the text of the tweets. So we do it in this way (we also need to clean up the tweets from special characters that for now we don't need, like emoticons with teh `sapply` function.)
+Now we need to access the text of the tweets. So we do it in this way (we also need to clean up the tweets from special characters that for now we don't need, like emoticons with the `sapply` function.)
 
 ``` r
 tea_tweets = sapply(t_tweets, function(t) t$getText())
@@ -139,12 +142,12 @@ tea_tweets <- gsub("?(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", "", tea_tweets)
 head(tea_tweets)
 ```
 
-    ## [1] "Clear blue skies so another warm/hot day ahead \n#sunscreen \n#BBQ weather #breakfast #lunch #tea \n#HappyFathersDay "   
-    ## [2] "The best way to spend a Sunday, is to indulge in a cup of #tea made with #rich, pure and wholesome Dairyland #Milk. "    
-    ## [3] "A very Happy Father's Day to all you tea-drinking super-heroes out there!\n\n#FathersDay #Dad #Tea #Norfolk "            
-    ## [4] "#Win the amazing #international #WithLoveforBooks #mug, #pillow, #Kindle Fire,#tea &amp; #sterling #necklace #giveaway! "
-    ## [5] "It's all about the cream tea today! #jamfirst #creamteam #homemade #tea #prosecco #saltash "                             
-    ## [6] "Happy Father's Day  -  "
+    ## [1] "Fascinating tour of historic #Chichester house plus afternoon #tea @edeshouse #Birthday idea see Taste West #Sussex "
+    ## [2] "Our #bestfoodfriend @Aaronvegan at it again with a rich #tea &amp; #ginger #nut #pudding using "                     
+    ## [3] "Enjoy a delicious #brew, try one of the popular flavours from @CheshireTea  - "                                      
+    ## [4] "The real taste of #Apple #Cinnamon in every sip by @teameteas \n#TeaTime #Tea #TeaAddicts #BlackTea "                
+    ## [5] "In the edit on a new film about Tea featuring the Rare Tea Lady #tea #food #life "                                   
+    ## [6] "A great product range of #tea is developed by Tea Drops. An amazing assortment of USDA organic "
 
 Let's start with text mining
 ============================
@@ -181,14 +184,14 @@ coffee_corpus[[15]][1]
 ```
 
     ## $content
-    ## [1] "Good morning, enjoy your Sunday  #coffee #morningcoffee #goodmorning #cafe #illy #pula"
+    ## [1] "I scream, you scream, we all scream for no churn Kahla Espresso Ice Cream! #vegan #coffee... via @FitFoodieMama"
 
 ``` r
 tea_corpus[[15]][1]
 ```
 
     ## $content
-    ## [1] "Good to see a lovely display of #fairtrade decaffeinated #tea at the KLCC Suria this past week. #FairtradeRamadan "
+    ## [1] "#Tea Over Ice #Sweepstakes "
 
 Cleaning text
 -------------
@@ -280,7 +283,7 @@ clean_corp[[227]][1]
 ```
 
     ## $content
-    ## [1] " corning stovetop  tea pot 6 cup new carafe weekend ebay"
+    ## [1] "karishmakotak karishmakotak  looking gorgeousactress   think   take  pose   cup  "
 
 and the original one
 
@@ -289,9 +292,9 @@ coffee_corpus[[227]][1]
 ```
 
     ## $content
-    ## [1] "[ Corning Stovetop #coffee Tea Pot 6 cup NEW Carafe  #weekend #ebay"
+    ## [1] "@karishmakotak @karishmakotak you looking #GorgeousActress but I think you should take a pose with a cup #Coffee ,"
 
-So we have removed special characters, punctuation and so on. Not all the words make much sense really (for example twitter usernames) but it should not be a problem since we don't expect to see them very often in our corpus.
+So we have removed special characters, punctuation and so on. Not all the words make always much sense really (for example twitter usernames) but it should not be a problem since we don't expect to see them very often in our corpus.
 
 Make a document-term matrix
 ---------------------------
@@ -305,10 +308,10 @@ coffee_dtm <- DocumentTermMatrix(clean_corp)
 print(coffee_dtm)
 ```
 
-    ## <<DocumentTermMatrix (documents: 1000, terms: 3512)>>
-    ## Non-/sparse entries: 7564/3504436
+    ## <<DocumentTermMatrix (documents: 1000, terms: 3464)>>
+    ## Non-/sparse entries: 7208/3456792
     ## Sparsity           : 100%
-    ## Maximal term length: 89
+    ## Maximal term length: 38
     ## Weighting          : term frequency (tf)
 
 ``` r
@@ -319,7 +322,7 @@ coffee_m <- as.matrix(coffee_dtm)
 dim(coffee_m)
 ```
 
-    ## [1] 1000 3512
+    ## [1] 1000 3464
 
 ``` r
 # Review a portion of the matrix
@@ -327,17 +330,17 @@ coffee_m[1:10, 253: 259]
 ```
 
     ##     Terms
-    ## Docs bake bakerbusiness2 baking bakuman balcony bali bam
-    ##   1     0              0      0       0       0    0   0
-    ##   2     0              0      0       0       0    0   0
-    ##   3     0              0      0       0       0    0   0
-    ##   4     0              0      0       0       0    0   0
-    ##   5     0              0      0       0       0    0   0
-    ##   6     0              0      0       0       0    0   0
-    ##   7     0              0      0       0       0    0   0
-    ##   8     0              0      0       0       0    0   0
-    ##   9     0              0      0       0       0    0   0
-    ##   10    0              0      0       0       0    0   0
+    ## Docs bagelandlox bagels bagging bags bailed bakery baking
+    ##   1            0      0       0    0      0      0      0
+    ##   2            0      0       0    0      0      0      0
+    ##   3            0      0       0    0      0      0      0
+    ##   4            0      0       0    0      0      0      0
+    ##   5            1      0       0    0      0      0      0
+    ##   6            0      0       0    0      0      0      0
+    ##   7            0      0       0    0      0      0      0
+    ##   8            0      0       0    0      0      0      0
+    ##   9            0      0       0    0      0      0      0
+    ##   10           0      0       0    0      0      0      0
 
 Make a document-term matrix (DTM)
 ---------------------------------
@@ -352,10 +355,10 @@ coffee_tdm <- TermDocumentMatrix(clean_corp)
 print(coffee_tdm)
 ```
 
-    ## <<TermDocumentMatrix (terms: 3512, documents: 1000)>>
-    ## Non-/sparse entries: 7564/3504436
+    ## <<TermDocumentMatrix (terms: 3464, documents: 1000)>>
+    ## Non-/sparse entries: 7208/3456792
     ## Sparsity           : 100%
-    ## Maximal term length: 89
+    ## Maximal term length: 38
     ## Weighting          : term frequency (tf)
 
 ``` r
@@ -366,19 +369,19 @@ coffee_m <- as.matrix(coffee_tdm)
 dim(coffee_m)
 ```
 
-    ## [1] 3512 1000
+    ## [1] 3464 1000
 
 ``` r
 # Review a portion of the matrix
 coffee_m[2587:2590, 148:150]
 ```
 
-    ##                Docs
-    ## Terms           148 149 150
-    ##   relationships   0   0   0
-    ##   relax           0   0   0
-    ##   relaxing        0   0   0
-    ##   relaxingtime    0   0   0
+    ##             Docs
+    ## Terms        148 149 150
+    ##   recycled     0   0   0
+    ##   red          0   0   0
+    ##   redfox       0   0   0
+    ##   redroaster   0   0   0
 
 Frequent terms with tm
 ----------------------
@@ -409,17 +412,19 @@ term_frequency <- sort(term_frequency, decreasing = TRUE)
 term_frequency[1:10]
 ```
 
-    ##    morning     sunday        day       love  starbucks        cup 
-    ##         74         64         62         57         54         51 
-    ##        tea      great coffeetime       good 
-    ##         48         45         42         42
+    ##           monday          morning             good              day 
+    ##              138              129               67               58 
+    ##              cup            today              get            happy 
+    ##               43               43               42               42 
+    ## mondaymotivation             work 
+    ##               40               40
 
 ``` r
 # Plot a barchart of the 10 most common words
 barplot(term_frequency[1:10], col = "tan", las = 2)
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-22-1.png) Now let's make it a bit prettier with **ggplot2**...
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-58-1.png) Now let's make it a bit prettier with **ggplot2**...
 
 ``` r
 library(ggplot2)
@@ -436,12 +441,17 @@ tf10 <- as.data.frame(tf[1:10,])
 # x axis alphabetically
 tf10 <- mutate(tf10, words = factor(words, words))
 
-ggplot(tf10, aes(x = tf10$words , y = tf10$term_frequency   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
+ggplot(tf10, aes(x = tf10$words , y = tf10$term_frequency   )) + 
+  geom_bar(stat = "identity", fill = "tan", col = "black")+ 
+  theme_grey()+theme(text = element_text(size=16),
+                     axis.title.x=element_blank(),
+                     axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+
+  ylab("Words Frequency") 
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-24-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-60-1.png)
 
-Note that the knitr button command don't work from Rstudio if you want to use `knitr`. So the solution is to do it from the console with the following commands
+Note that the knitr button command don't work from Rstudio with these libraries (Java problems on my system), if you want to use `knitr`. So the solution is to do it from the console with the following commands
 
 ``` r
 library(rmarkdown)
@@ -458,24 +468,36 @@ library(qdap)
 Let's build a word frequency plot with `qdap` library (note that we are not working with our cleaned up corpus, and therefore we will see different words).
 
 ``` r
-frequency <- freq_terms(coffee_tweets, top = 10, at.least = 3, stopwords = "Top200Words")
+frequency <- freq_terms(coffee_tweets, top = 10, at.least = 3, 
+                        stopwords = "Top200Words")
 
 frequency <- mutate(frequency, WORD = factor(WORD, WORD))
 
-ggplot(frequency, aes(x = frequency$WORD , y = frequency$FREQ   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
+ggplot(frequency, aes(x = frequency$WORD , y = frequency$FREQ   )) + 
+  geom_bar(stat = "identity", fill = "tan", col = "black")+ 
+  theme_grey()+theme(text = element_text(size=16),  
+                     axis.title.x=element_blank(),
+                     axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+
+  ylab("Words Frequency") 
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-27-1.png) Now let's remove more stopwords (now it looks similar to what we obtained at the beginning)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-63-1.png) Now let's remove more stopwords (now it looks similar to what we obtained at the beginning)
 
 ``` r
 frequency2 <- freq_terms(coffee_tweets, top = 10, at.least = 3, stopwords = c(tm::stopwords("english"),"coffee","httpstco","amp","now","cafe"))
 
 frequency2 <- mutate(frequency2, WORD = factor(WORD, WORD))
 
-ggplot(frequency2, aes(x = frequency2$WORD , y = frequency2$FREQ   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
+ggplot(frequency2, aes(x = frequency2$WORD , y = frequency2$FREQ   )) + 
+  geom_bar(stat = "identity", fill = "tan", col = "black")+ 
+  theme_grey()+
+  theme(text = element_text(size=16),  
+        axis.title.x=element_blank(),
+        axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+
+  ylab("Words Frequency") 
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-28-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-64-1.png)
 
 Wordclouds
 ----------
@@ -488,23 +510,19 @@ library(wordcloud)
 term_frequency[1:10]
 ```
 
-    ##    morning     sunday        day       love  starbucks        cup 
-    ##         74         64         62         57         54         51 
-    ##        tea      great coffeetime       good 
-    ##         48         45         42         42
+    ##           monday          morning             good              day 
+    ##              138              129               67               58 
+    ##              cup            today              get            happy 
+    ##               43               43               42               42 
+    ## mondaymotivation             work 
+    ##               40               40
 
 ``` r
 word_freqs <- data.frame(term = names(term_frequency), num = term_frequency)
 wordcloud(word_freqs$term, word_freqs$num, max.words = 100, colors = "red")
 ```
 
-    ## Warning in wordcloud(word_freqs$term, word_freqs$num, max.words = 100,
-    ## colors = "red"): morning could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(word_freqs$term, word_freqs$num, max.words = 100,
-    ## colors = "red"): saturday could not be fit on page. It will not be plotted.
-
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-65-1.png)
 
 Now we need to remove some words that are clear are appearing while talking about coffee
 
@@ -533,8 +551,8 @@ coffee_words <- sort(coffee_words, decreasing = TRUE)
 coffee_words[1:6]
 ```
 
-    ##   morning    sunday       day      love starbucks       amp 
-    ##        74        64        62        57        54        51
+    ##  monday morning     amp    good     day   today 
+    ##     138     129      68      67      59      43
 
 ``` r
 coffee_freqs <- data.frame (term = names(coffee_words), num = coffee_words)
@@ -542,33 +560,17 @@ coffee_freqs <- data.frame (term = names(coffee_words), num = coffee_words)
 wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 50, colors = "red")
 ```
 
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 50, :
-    ## starbucks could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 50, :
-    ## sunday could not be fit on page. It will not be plotted.
-
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-67-1.png)
 
 ### Improve word colours
 
 ``` r
-wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = c("grey80", "darkgoldenrod1", "tomato"))
+wordcloud(coffee_freqs$term, coffee_freqs$num, 
+          max.words = 100, 
+          colors = c("grey80", "darkgoldenrod1", "tomato"))
 ```
 
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : thecupoffaith could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : morning could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : great could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : thanks could not be fit on page. It will not be plotted.
-
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-68-1.png)
 
 Now let's improve even more on the colors. To do that we will need to use RColorBrewer. RColorBrewer color schemes are organized into three categories:
 
@@ -595,7 +597,7 @@ The command `display.brewer.all()` will display all palettes. Is a very cool com
 display.brewer.all()
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-33-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-69-1.png)
 
 Let's try to use the `PuOr` palette
 
@@ -611,32 +613,20 @@ And now we can create the wordcloud woith this palette
 wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = purple_orange)
 ```
 
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : shop could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : great could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : happy could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : breakfast could not be fit on page. It will not be plotted.
-
-    ## Warning in wordcloud(coffee_freqs$term, coffee_freqs$num, max.words =
-    ## 100, : weekend could not be fit on page. It will not be plotted.
-
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-35-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-71-1.png)
 
 Weel it seems that people talking about coffee are talking also about "morning". Make sense. When is Coffee important if not on the morning?
 
 Sometimes not all the words can be plotted. In this case the only solutions are to reduce the number of words or to reduce the scale of the words themselves. For example
 
 ``` r
-wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = purple_orange, scale = c(2,0.3))
+wordcloud(coffee_freqs$term, coffee_freqs$num, 
+          max.words = 100, 
+          colors = purple_orange, 
+          scale = c(2,0.3))
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-36-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-72-1.png)
 
 Wordclouds with bigrams
 -----------------------
@@ -662,29 +652,25 @@ freq.df <- data.frame(word = names(freq), freq= freq)
 head(freq.df)
 ```
 
-    ##                word freq
-    ## morning     morning   74
-    ## sunday       sunday   64
-    ## day             day   62
-    ## love           love   57
-    ## starbucks starbucks   54
-    ## cup             cup   51
+    ##            word freq
+    ## monday   monday  138
+    ## morning morning  129
+    ## good       good   67
+    ## day         day   58
+    ## cup         cup   43
+    ## today     today   43
 
 Now we can plot the wordcloud
 
 ``` r
-wordcloud(freq.df$word, freq.df$freq, max.words = 50, random.order = F, colors = purple_orange, scale = c(4,0.7))
+wordcloud(freq.df$word, freq.df$freq, 
+          max.words = 50, 
+          random.order = F, 
+          colors = purple_orange, 
+          scale = c(4,0.7))
 ```
 
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 50,
-    ## random.order = F, : coffeeshop could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 50,
-    ## random.order = F, : thecupoffaith thecupoffaith could not be fit on page.
-    ## It will not be plotted.
-
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-40-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-76-1.png)
 
 Apparently not many bigrams appear so frequently. The only one is "good morning". It makes again sense...
 
@@ -704,95 +690,25 @@ freq.df <- data.frame(word = names(freq), freq= freq)
 head(freq.df)
 ```
 
-    ##                                                    word freq
-    ## good morning                               good morning   17
-    ## thecupoffaith thecupoffaith thecupoffaith thecupoffaith   16
-    ## fathers day                                 fathers day   15
-    ## weve got                                       weve got   14
-    ## weekend ebay                               weekend ebay   13
-    ## saturday morning                       saturday morning   12
+    ##                                  word freq
+    ## good morning             good morning   32
+    ## happy monday             happy monday   30
+    ## ready total               ready total   14
+    ## ready total liters ready total liters   14
+    ## total liters             total liters   14
+    ## best machines           best machines   11
 
 ``` r
-wordcloud(freq.df$word, freq.df$freq, max.words = 40, random.order = F, colors = purple_orange, scale = c(3,0.7))
+wordcloud(freq.df$word, freq.df$freq, 
+          max.words = 40, 
+          random.order = F, 
+          colors = purple_orange, 
+          scale = c(2,0.7))
 ```
 
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : thecupoffaith thecupoffaith could not be fit on page.
-    ## It will not be plotted.
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-78-1.png)
 
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : probably bit hungover could not be fit on page. It will
-    ## not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : saturday morning youre could not be fit on page. It
-    ## will not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : sunday morning could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : weve got cure could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : worry weve got could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : yeah worry weve could not be fit on page. It will not
-    ## be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : youre probably could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : youre probably bit could not be fit on page. It will
-    ## not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : caffeine kill could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : can much caffeine could not be fit on page. It will not
-    ## be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : coffeenews findthelittleman could not be fit on page.
-    ## It will not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : coffeenews findthelittleman quote could not be fit on
-    ## page. It will not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : findthelittleman quote could not be fit on page. It
-    ## will not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : findthelittleman quote quoteoftheday could not be fit
-    ## on page. It will not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : happy sunday could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : kill caffeine could not be fit on page. It will not be
-    ## plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : quote quoteoftheday could not be fit on page. It will
-    ## not be plotted.
-
-    ## Warning in wordcloud(freq.df$word, freq.df$freq, max.words = 40,
-    ## random.order = F, : starbucks love could not be fit on page. It will not be
-    ## plotted.
-
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-42-1.png) Words are long so not all could be written in the plot. You have to choose between something that is not readable and something that has less words...
+Words are long so not all could be written in the plot. You have to choose between something that is not readable and something that has less words...
 
 Common Words between Corpora
 ============================
@@ -846,7 +762,10 @@ Now the communality cloud
 commonality.cloud(all_m, max.words = 100, colors = "steelblue1")
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-47-1.png)
+    ## Warning in wordcloud(rownames(term.matrix)[freq > 0], freq[freq > 0],
+    ## min.freq = 0, : morning could not be fit on page. It will not be plotted.
+
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-83-1.png)
 
 Comparison Cloud
 ----------------
@@ -857,10 +776,7 @@ You can plot a comparison cloud in this way
 comparison.cloud(all_m, max.words = 50, colors = c("orange", "blue"), scale = c(3,0.5))
 ```
 
-    ## Warning in comparison.cloud(all_m, max.words = 50, colors = c("orange", :
-    ## withloveforbooks could not be fit on page. It will not be plotted.
-
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-48-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-84-1.png)
 
 (Source Datacamp) A commonality.cloud() may be misleading since words could be represented disproportionately in one corpus or the other, even if they are shared. In the commonality cloud, they would show up without telling you which one of the corpora has more term occurrences.
 
@@ -897,7 +813,7 @@ pyramid.plot(top25_df$x, top25_df$y,
              raxlab = NULL, unit = NULL)
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-50-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-86-1.png)
 
     ## [1] 5.1 4.1 4.1 2.1
 
@@ -918,14 +834,14 @@ word_associate(coffee_tweets, match.string = c("books"),
     ## colors = label.colors): length of colors should be 1 more than length of
     ## recode.words
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-51-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-87-1.png)
 
-    ##   row group unit text                                                                                                           
-    ## 1  23   all   23 Beauty may get him killed!#book #Amazon #Readers #UK #Romance #books #musiclover #greatreads #Historical       
-    ## 2 329   all  329 8 New Books We Recommend This Week #coffee #books #booklover #amreading                                        
-    ## 3 398   all  398 Follow the Ghosts in his Past...BLACKHEART!#Romance #books #novel #story #History #historicalromance #Amazon   
-    ## 4 437   all  437 Your cup of #coffee and this post on my #blog. Sounds like a good day to me! =0) #booklove #amreading #books...
-    ## 5 749   all  749 A coffee shop, a kiss, will this love last a lifetime? #kindlebooks #coffee #epub #kindle
+    ##   row group unit text                                                                                                       
+    ## 1 278   all  278 He doesn't bat an eye at the #bookstacks dominating our home &amp; buys me #coffee all the time.           
+    ## 2 636   all  636 Happy Monday! #workday #gmorning #monday #coffee #iamwriter #books #kindle #breakfast                      
+    ## 3 643   all  643 When summer school is over, but you're still in "early wake up" mode. #Books #FuzzySocks #Coffee           
+    ## 4 761   all  761 There are only two perfect things in this world...books and #coffee! Time for #amreading lunchtime!!       
+    ## 5 940   all  940 Step into History with BLACKHEART, a Pirate!#coffee #books #StoryFriday #fantasy #book #Readers #literature
 
     ## 
     ## Match Terms
@@ -933,7 +849,7 @@ word_associate(coffee_tweets, match.string = c("books"),
 
     ## 
     ## List 1:
-    ## books, kindlebooks
+    ## bookstacks, books, worldbooks
 
     ## 
 
@@ -952,7 +868,7 @@ Let's see the dimensions of your coffee tdm
 dim(coffee_tdm)
 ```
 
-    ## [1] 3435 1000
+    ## [1] 3399 1000
 
 Let's remove some terms
 
@@ -961,7 +877,7 @@ coffee_tdm1 <- removeSparseTerms(coffee_tdm, sparse = 0.97)
 dim(coffee_tdm1)
 ```
 
-    ## [1]   13 1000
+    ## [1]   15 1000
 
 Let's see a dendrogram now
 
@@ -974,7 +890,7 @@ coffee_hc <- hclust(coffee_dist)
 plot(coffee_hc)
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-54-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-90-1.png)
 
 Now let's make the dendrogram more appealing
 
@@ -989,9 +905,11 @@ hcd <- as.dendrogram(coffee_hc)
 labels(hcd)
 ```
 
-    ##  [1] "morning"   "sunday"    "day"       "great"     "love"     
-    ##  [6] "starbucks" "amp"       "good"      "shop"      "latte"    
-    ## [11] "via"       "mug"       "tea"
+    ##  [1] "monday"           "morning"          "amp"             
+    ##  [4] "good"             "day"              "great"           
+    ##  [7] "today"            "get"              "mondaymotivation"
+    ## [10] "love"             "need"             "happy"           
+    ## [13] "work"             "now"              "ready"
 
 Now let's work on the appearance
 
@@ -1000,13 +918,15 @@ hcd <- branches_attr_by_labels(hcd, c("mondaymorning", "work"), "red")
 ```
 
     ## Warning in branches_attr_by_labels(hcd, c("mondaymorning", "work"), "red"): Not all of the labels you provided are included in the dendrogram.
-    ## The following labels were omitted:mondaymorningwork
+    ## The following labels were omitted:mondaymorning
 
 ``` r
 plot(hcd, main = "Better Dendrogram")
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-57-1.png) Now let's add rectangular shapes around the clusters
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-93-1.png)
+
+Now let's add rectangular shapes around the clusters
 
 ``` r
 # Add cluster rectangles 
@@ -1014,7 +934,7 @@ plot(hcd, main = "Better Dendrogram")
 rect.dendrogram(hcd, k = 2, border = "grey50")
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-58-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-94-1.png)
 
 Word Associations
 =================
@@ -1034,16 +954,18 @@ print(associations)
 ```
 
     ## $starbucks
-    ##         frappuccino               yummy           argentina 
-    ##                0.34                0.26                0.25 
-    ##              faster           fireworks               means 
-    ##                0.25                0.25                0.25 
-    ##           oversized     recentforrecent        relaxingtime 
-    ##                0.25                0.25                0.25 
-    ##                sbux underthebuckeyetree          weekendoff 
-    ##                0.25                0.25                0.25 
-    ##               latte 
-    ##                0.22
+    ##        townhouse            kyoto           outlet         bearable 
+    ##             0.35             0.32             0.32             0.31 
+    ##            cafol        cnntravel             lait            likes 
+    ##             0.31             0.31             0.31             0.31 
+    ##        prettiest            screw              set              son 
+    ##             0.31             0.31             0.31             0.31 
+    ##            spell           theyll           inside          yearold 
+    ##             0.31             0.31             0.30             0.30 
+    ##       caffinated           inhand         columbia              dog 
+    ##             0.26             0.26             0.21             0.21 
+    ##      frappuccino       indulgence starbucksreserve          twotone 
+    ##             0.21             0.21             0.21             0.21
 
 As you can see, some more serious cleaning of the text should be done to gain real interesting insights.
 
@@ -1060,7 +982,7 @@ ggplot(associations_df, aes(y = associations_df[, 1])) +
   theme_gdocs()
 ```
 
-![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-60-1.png)
+![](text-mining-notes_files/figure-markdown_github/unnamed-chunk-96-1.png)
 
 Similarity matrix
 =================
@@ -1069,7 +991,22 @@ Another very useful thing to calculate is the similarity matrix between tweets. 
 
 ``` r
 require(proxy)
+```
 
+    ## Loading required package: proxy
+
+    ## 
+    ## Attaching package: 'proxy'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     as.dist, dist
+
+    ## The following object is masked from 'package:base':
+    ## 
+    ##     as.matrix
+
+``` r
 coffee_tdm_m <- as.matrix(coffee_tdm)
 
 coffee_cosine_dist_mat <- as.matrix(dist(coffee_tdm_m, method = "cosine"))
@@ -1081,7 +1018,7 @@ what dimensions we have in this matrix?
 dim(coffee_cosine_dist_mat)
 ```
 
-    ## [1] 3435 3435
+    ## [1] 3399 3399
 
 as expected. Let's check some rows
 
@@ -1089,18 +1026,19 @@ as expected. Let's check some rows
 coffee_cosine_dist_mat[1:5,1:5]
 ```
 
-    ##                 aandladventures abbeygroup absolute absolutely accents
-    ## aandladventures               0          1        1          1       1
-    ## abbeygroup                    1          0        1          1       1
-    ## absolute                      1          1        0          1       1
-    ## absolutely                    1          1        1          0       1
-    ## accents                       1          1        1          1       0
+    ##               abbotkinney abeducational able abraaj abstraction
+    ## abbotkinney             0             1    1      1           1
+    ## abeducational           1             0    1      1           1
+    ## able                    1             1    0      1           1
+    ## abraaj                  1             1    1      0           1
+    ## abstraction             1             1    1      1           0
 
 We can do the same calculations using the fact we have sparse matrices
 
 ``` r
 library(slam)
-cosine_dist_mat <- crossprod_simple_triplet_matrix(coffee_tdm)/(sqrt(col_sums(coffee_tdm^2) %*% t(col_sums(coffee_tdm^2))))
+cosine_dist_mat <- crossprod_simple_triplet_matrix(coffee_tdm)/
+  (sqrt(col_sums(coffee_tdm^2) %*% t(col_sums(coffee_tdm^2))))
 ```
 
 ``` r
@@ -1108,22 +1046,22 @@ cosine_dist_mat[1:15,1:15]
 ```
 
     ##     Docs
-    ## Docs         1 2 3 4         5 6         7         8 9 10 11 12 13 14 15
-    ##   1  1.0000000 0 0 0 0.1690309 0 0.0000000 0.0000000 0  0  0  0  0  0  0
-    ##   2  0.0000000 1 0 0 0.0000000 0 0.0000000 0.0000000 0  0  0  0  0  0  0
-    ##   3  0.0000000 0 1 0 0.0000000 0 0.0000000 0.0000000 0  0  0  0  0  0  0
-    ##   4  0.0000000 0 0 1 0.0000000 0 0.0000000 0.0000000 0  0  0  0  0  0  0
-    ##   5  0.1690309 0 0 0 1.0000000 0 0.0000000 0.0000000 0  0  0  0  0  0  0
-    ##   6  0.0000000 0 0 0 0.0000000 1 0.0000000 0.0000000 0  0  0  0  0  0  0
-    ##   7  0.0000000 0 0 0 0.0000000 0 1.0000000 0.1066004 0  0  0  0  0  0  0
-    ##   8  0.0000000 0 0 0 0.0000000 0 0.1066004 1.0000000 0  0  0  0  0  0  0
-    ##   9  0.0000000 0 0 0 0.0000000 0 0.0000000 0.0000000 1  0  0  0  0  0  0
-    ##   10 0.0000000 0 0 0 0.0000000 0 0.0000000 0.0000000 0  1  1  1  1  0  0
-    ##   11 0.0000000 0 0 0 0.0000000 0 0.0000000 0.0000000 0  1  1  1  1  0  0
-    ##   12 0.0000000 0 0 0 0.0000000 0 0.0000000 0.0000000 0  1  1  1  1  0  0
-    ##   13 0.0000000 0 0 0 0.0000000 0 0.0000000 0.0000000 0  1  1  1  1  0  0
-    ##   14 0.0000000 0 0 0 0.0000000 0 0.0000000 0.0000000 0  0  0  0  0  1  0
-    ##   15 0.0000000 0 0 0 0.0000000 0 0.0000000 0.0000000 0  0  0  0  0  0  1
+    ## Docs 1 2 3 4 5         6          7         8 9 10 11 12 13 14         15
+    ##   1  1 0 0 0 0 0.0000000 0.00000000 0.0000000 0  0  0  0  0  0 0.00000000
+    ##   2  0 1 0 0 0 0.0000000 0.00000000 0.0000000 0  0  0  0  0  0 0.00000000
+    ##   3  0 0 1 0 0 0.0000000 0.00000000 0.0000000 0  0  0  0  0  0 0.00000000
+    ##   4  0 0 0 1 0 0.0000000 0.00000000 0.0000000 0  0  0  0  0  0 0.00000000
+    ##   5  0 0 0 0 1 0.0000000 0.00000000 0.0000000 0  0  0  0  0  0 0.00000000
+    ##   6  0 0 0 0 0 1.0000000 0.00000000 0.9354143 0  0  0  0  0  0 0.00000000
+    ##   7  0 0 0 0 0 0.0000000 1.00000000 0.0000000 0  0  0  0  0  0 0.08574929
+    ##   8  0 0 0 0 0 0.9354143 0.00000000 1.0000000 0  0  0  0  0  0 0.00000000
+    ##   9  0 0 0 0 0 0.0000000 0.00000000 0.0000000 1  0  0  0  0  0 0.00000000
+    ##   10 0 0 0 0 0 0.0000000 0.00000000 0.0000000 0  1  0  0  0  0 0.00000000
+    ##   11 0 0 0 0 0 0.0000000 0.00000000 0.0000000 0  0  1  0  0  0 0.00000000
+    ##   12 0 0 0 0 0 0.0000000 0.00000000 0.0000000 0  0  0  1  0  0 0.00000000
+    ##   13 0 0 0 0 0 0.0000000 0.00000000 0.0000000 0  0  0  0  1  0 0.00000000
+    ##   14 0 0 0 0 0 0.0000000 0.00000000 0.0000000 0  0  0  0  0  1 0.00000000
+    ##   15 0 0 0 0 0 0.0000000 0.08574929 0.0000000 0  0  0  0  0  0 1.00000000
 
 Tweets 14 and 4 seems similar. Let's check them
 
@@ -1131,41 +1069,44 @@ Tweets 14 and 4 seems similar. Let's check them
 print(coffee_tweets[[14]])
 ```
 
-    ## [1] "When your keyboard changes \"Coffee\" to \"Covfefe\". \n#Trump\n#Coffee"
+    ## [1] "Sitting in the window of @Costa watching the world go by \n#chilled #coffee #SkinnnyLatte #timeoutforme"
 
 ``` r
 print(coffee_tweets[[5]])
 ```
 
-    ## [1] "Want to know more about the #CafeRacer? Watch this space! #video #coffee #wearesanremo"
+    ## [1] "Breakfast in the Quarter at cafeenvie ! #bagelandlox #coffee #NOLA"
 
 Bag of words
 ============
 
 ``` r
-my.tdm <- TermDocumentMatrix(coffee_corpus, control = list(weighting = weightTfIdf))
-my.dtm <- DocumentTermMatrix(coffee_corpus, control = list(weighting = weightTfIdf, stopwords = TRUE))
+my.tdm <- TermDocumentMatrix(coffee_corpus, 
+                             control = list(weighting = weightTfIdf))
+my.dtm <- DocumentTermMatrix(coffee_corpus, 
+                             control = list(weighting = weightTfIdf, 
+                                            stopwords = TRUE))
 inspect(my.dtm)
 ```
 
-    ## <<DocumentTermMatrix (documents: 1000, terms: 4306)>>
-    ## Non-/sparse entries: 9213/4296787
+    ## <<DocumentTermMatrix (documents: 1000, terms: 4212)>>
+    ## Non-/sparse entries: 8783/4203217
     ## Sparsity           : 100%
-    ## Maximal term length: 98
+    ## Maximal term length: 39
     ## Weighting          : term frequency - inverse document frequency (normalized) (tf-idf)
     ## Sample             :
     ##      Terms
-    ## Docs  #coffeetime #mug #starbucks &amp; coffee cup day good great morning
-    ##   256           0    0          0     0      0   0   0    0     0       0
-    ##   502           0    0          0     0      0   0   0    0     0       0
-    ##   668           0    0          0     0      0   0   0    0     0       0
-    ##   669           0    0          0     0      0   0   0    0     0       0
-    ##   748           0    0          0     0      0   0   0    0     0       0
-    ##   786           0    0          0     0      0   0   0    0     0       0
-    ##   879           0    0          0     0      0   0   0    0     0       0
-    ##   919           0    0          0     0      0   0   0    0     0       0
-    ##   938           0    0          0     0      0   0   0    0     0       0
-    ##   978           0    0          0     0      0   0   0    0     0       0
+    ## Docs  #monday &amp; coffee cup day good love monday morning need
+    ##   296       0     0      0   0   0    0    0      0       0    0
+    ##   41        0     0      0   0   0    0    0      0       0    0
+    ##   445       0     0      0   0   0    0    0      0       0    0
+    ##   491       0     0      0   0   0    0    0      0       0    0
+    ##   52        0     0      0   0   0    0    0      0       0    0
+    ##   630       0     0      0   0   0    0    0      0       0    0
+    ##   713       0     0      0   0   0    0    0      0       0    0
+    ##   872       0     0      0   0   0    0    0      0       0    0
+    ##   902       0     0      0   0   0    0    0      0       0    0
+    ##   940       0     0      0   0   0    0    0      0       0    0
 
 Let's find (for example) all words that appear twice in any document
 
@@ -1176,546 +1117,40 @@ findFreqTerms(my.tdm, 200)
     ## character(0)
 
 ``` r
-cosine_dist_mat <- crossprod_simple_triplet_matrix(my.tdm)/(sqrt(col_sums(my.tdm^2) %*% t(col_sums(my.tdm^2))))
+cosine_dist_mat <- crossprod_simple_triplet_matrix(my.tdm)/
+  (sqrt(col_sums(my.tdm^2) %*% t(col_sums(my.tdm^2))))
 cosine_dist_mat[1:5,1:5]
 ```
 
     ##     Docs
-    ## Docs          1            2            3            4            5
-    ##    1 1.00000000 0.000000e+00 0.000000e+00 0.000000e+00 6.807778e-02
-    ##    2 0.00000000 1.000000e+00 5.810629e-05 4.406399e-05 1.502096e-02
-    ##    3 0.00000000 5.810629e-05 1.000000e+00 6.872237e-05 5.609138e-05
-    ##    4 0.00000000 4.406399e-05 6.872237e-05 1.000000e+00 4.253602e-05
-    ##    5 0.06807778 1.502096e-02 5.609138e-05 4.253602e-05 1.000000e+00
+    ## Docs            1            2            3 4            5
+    ##    1 1.000000e+00 6.637792e-05 7.011253e-03 0 8.386614e-03
+    ##    2 6.637792e-05 1.000000e+00 5.100975e-05 0 7.420666e-05
+    ##    3 7.011253e-03 5.100975e-05 1.000000e+00 0 5.498966e-05
+    ##    4 0.000000e+00 0.000000e+00 0.000000e+00 1 0.000000e+00
+    ##    5 8.386614e-03 7.420666e-05 5.498966e-05 0 1.000000e+00
 
 ``` r
 y <- which(cosine_dist_mat>0.5, arr.in = TRUE)
 str(y)
 ```
 
-    ##  int [1:1612, 1:2] 1 2 3 4 5 6 7 8 9 10 ...
+    ##  int [1:1462, 1:2] 1 2 3 4 36 5 6 8 7 6 ...
     ##  - attr(*, "dimnames")=List of 2
-    ##   ..$ : chr [1:1612] "1" "2" "3" "4" ...
+    ##   ..$ : chr [1:1462] "1" "2" "3" "4" ...
     ##   ..$ : chr [1:2] "Docs" "Docs"
-
-``` r
-y
-```
-
-    ##      Docs Docs
-    ## 1       1    1
-    ## 2       2    2
-    ## 3       3    3
-    ## 4       4    4
-    ## 5       5    5
-    ## 6       6    6
-    ## 7       7    7
-    ## 8       8    8
-    ## 9       9    9
-    ## 10     10   10
-    ## 11     11   10
-    ## 12     12   10
-    ## 13     13   10
-    ## 10     10   11
-    ## 11     11   11
-    ## 12     12   11
-    ## 13     13   11
-    ## 10     10   12
-    ## 11     11   12
-    ## 12     12   12
-    ## 13     13   12
-    ## 10     10   13
-    ## 11     11   13
-    ## 12     12   13
-    ## 13     13   13
-    ## 14     14   14
-    ## 15     15   15
-    ## 16     16   16
-    ## 17     17   17
-    ## 18     18   18
-    ## 19     19   19
-    ## 179   179   19
-    ## 20     20   20
-    ## 21     21   21
-    ## 22     22   22
-    ## 23     23   23
-    ## 24     24   24
-    ## 25     25   25
-    ## 26     26   26
-    ## 27     27   26
-    ## 26     26   27
-    ## 27     27   27
-    ## 28     28   28
-    ## 29     29   29
-    ## 30     30   30
-    ## 729   729   30
-    ## 31     31   31
-    ## 32     32   32
-    ## 33     33   33
-    ## 34     34   34
-    ## 55     55   34
-    ## 35     35   35
-    ## 36     36   36
-    ## 37     37   37
-    ## 38     38   38
-    ## 597   597   38
-    ## 39     39   39
-    ## 40     40   40
-    ## 41     41   41
-    ## 42     42   42
-    ## 43     43   43
-    ## 124   124   43
-    ## 130   130   43
-    ## 132   132   43
-    ## 136   136   43
-    ## 142   142   43
-    ## 190   190   43
-    ## 194   194   43
-    ## 44     44   44
-    ## 45     45   45
-    ## 46     46   46
-    ## 47     47   47
-    ## 48     48   48
-    ## 49     49   49
-    ## 50     50   50
-    ## 51     51   51
-    ## 201   201   51
-    ## 52     52   52
-    ## 53     53   53
-    ## 54     54   54
-    ## 34     34   55
-    ## 55     55   55
-    ## 56     56   56
-    ## 57     57   57
-    ## 484   484   57
-    ## 58     58   58
-    ## 59     59   59
-    ## 60     60   60
-    ## 61     61   61
-    ## 62     62   62
-    ## 63     63   63
-    ## 64     64   64
-    ## 65     65   65
-    ## 67     67   65
-    ## 66     66   66
-    ## 65     65   67
-    ## 67     67   67
-    ## 68     68   68
-    ## 69     69   69
-    ## 70     70   70
-    ## 71     71   71
-    ## 72     72   72
-    ## 113   113   72
-    ## 73     73   73
-    ## 445   445   73
-    ## 633   633   73
-    ## 74     74   74
-    ## 75     75   75
-    ## 76     76   76
-    ## 77     77   77
-    ## 78     78   78
-    ## 79     79   79
-    ## 80     80   80
-    ## 81     81   81
-    ## 82     82   82
-    ## 84     84   82
-    ## 86     86   82
-    ## 83     83   83
-    ## 82     82   84
-    ## 84     84   84
-    ## 86     86   84
-    ## 85     85   85
-    ## 82     82   86
-    ## 84     84   86
-    ## 86     86   86
-    ## 87     87   87
-    ## 88     88   88
-    ## 89     89   89
-    ## 140   140   89
-    ## 90     90   90
-    ## 91     91   91
-    ## 163   163   91
-    ## 334   334   91
-    ## 365   365   91
-    ## 463   463   91
-    ## 464   464   91
-    ## 522   522   91
-    ## 732   732   91
-    ## 92     92   92
-    ## 93     93   93
-    ## 94     94   94
-    ## 95     95   95
-    ## 96     96   96
-    ## 97     97   97
-    ## 98     98   98
-    ## 99     99   99
-    ## 100   100  100
-    ## 101   101  101
-    ## 102   102  102
-    ## 307   307  102
-    ## 360   360  102
-    ## 426   426  102
-    ## 517   517  102
-    ## 599   599  102
-    ## 103   103  103
-    ## 104   104  104
-    ## 105   105  105
-    ## 106   106  106
-    ## 107   107  107
-    ## 108   108  108
-    ## 109   109  109
-    ## 110   110  110
-    ## 111   111  111
-    ## 112   112  112
-    ## 72     72  113
-    ## 113   113  113
-    ## 114   114  114
-    ## 115   115  115
-    ## 116   116  116
-    ## 117   117  117
-    ## 118   118  118
-    ## 370   370  118
-    ## 119   119  119
-    ## 120   120  120
-    ## 121   121  121
-    ## 122   122  122
-    ## 123   123  123
-    ## 43     43  124
-    ## 124   124  124
-    ## 130   130  124
-    ## 132   132  124
-    ## 136   136  124
-    ## 142   142  124
-    ## 190   190  124
-    ## 194   194  124
-    ## 125   125  125
-    ## 128   128  125
-    ## 126   126  126
-    ## 127   127  127
-    ## 125   125  128
-    ## 128   128  128
-    ## 129   129  129
-    ## 43     43  130
-    ## 124   124  130
-    ## 130   130  130
-    ## 132   132  130
-    ## 136   136  130
-    ## 142   142  130
-    ## 131   131  131
-    ## 43     43  132
-    ## 124   124  132
-    ## 130   130  132
-    ## 132   132  132
-    ## 136   136  132
-    ## 142   142  132
-    ## 190   190  132
-    ## 194   194  132
-    ## 133   133  133
-    ## 134   134  134
-    ## 135   135  135
-    ## 43     43  136
-    ## 124   124  136
-    ## 130   130  136
-    ## 132   132  136
-    ## 136   136  136
-    ## 453   453  136
-    ## 137   137  137
-    ## 138   138  138
-    ## 139   139  139
-    ## 89     89  140
-    ## 140   140  140
-    ## 141   141  141
-    ## 43     43  142
-    ## 124   124  142
-    ## 130   130  142
-    ## 132   132  142
-    ## 142   142  142
-    ## 190   190  142
-    ## 192   192  142
-    ## 194   194  142
-    ## 198   198  142
-    ## 200   200  142
-    ## 143   143  143
-    ## 144   144  144
-    ## 145   145  145
-    ## 146   146  146
-    ## 147   147  147
-    ## 148   148  148
-    ## 149   149  149
-    ## 184   184  149
-    ## 225   225  149
-    ## 287   287  149
-    ## 339   339  149
-    ## 341   341  149
-    ## 344   344  149
-    ## 351   351  149
-    ## 353   353  149
-    ## 150   150  150
-    ## 151   151  151
-    ## 152   152  152
-    ## 153   153  152
-    ## 152   152  153
-    ## 153   153  153
-    ## 154   154  154
-    ## 155   155  155
-    ## 729   729  155
-    ## 894   894  155
-    ## 156   156  156
-    ## 157   157  157
-    ## 158   158  158
-    ## 159   159  159
-    ## 160   160  160
-    ## 161   161  161
-    ## 162   162  162
-    ## 91     91  163
-    ## 163   163  163
-    ## 334   334  163
-    ## 365   365  163
-    ## 463   463  163
-    ## 464   464  163
-    ## 522   522  163
-    ## 732   732  163
-    ## 164   164  164
-    ## 165   165  165
-    ## 166   166  166
-    ## 167   167  167
-    ## 168   168  168
-    ## 169   169  169
-    ## 170   170  170
-    ## 171   171  171
-    ## 172   172  172
-    ## 173   173  173
-    ## 174   174  174
-    ## 175   175  175
-    ## 176   176  176
-    ## 177   177  177
-    ## 178   178  178
-    ## 19     19  179
-    ## 179   179  179
-    ## 180   180  180
-    ## 181   181  181
-    ## 450   450  181
-    ## 182   182  182
-    ## 183   183  183
-    ## 149   149  184
-    ## 184   184  184
-    ## 225   225  184
-    ## 287   287  184
-    ## 339   339  184
-    ## 341   341  184
-    ## 344   344  184
-    ## 351   351  184
-    ## 353   353  184
-    ## 185   185  185
-    ## 186   186  186
-    ## 187   187  187
-    ## 729   729  187
-    ## 188   188  188
-    ## 189   189  189
-    ## 43     43  190
-    ## 124   124  190
-    ## 132   132  190
-    ## 142   142  190
-    ## 190   190  190
-    ## 192   192  190
-    ## 194   194  190
-    ## 198   198  190
-    ## 199   199  190
-    ## 200   200  190
-    ## 461   461  190
-    ## 191   191  191
-    ## 142   142  192
-    ## 190   190  192
-    ## 192   192  192
-    ## 194   194  192
-    ## 198   198  192
-    ## 199   199  192
-    ## 200   200  192
-    ## 461   461  192
-    ## 193   193  193
-    ## 43     43  194
-    ## 124   124  194
-    ## 132   132  194
-    ## 142   142  194
-    ## 190   190  194
-    ## 192   192  194
-    ## 194   194  194
-    ## 198   198  194
-    ## 199   199  194
-    ## 200   200  194
-    ## 449   449  194
-    ## 453   453  194
-    ## 461   461  194
-    ## 195   195  195
-    ## 196   196  196
-    ## 197   197  197
-    ## 142   142  198
-    ## 190   190  198
-    ## 192   192  198
-    ## 194   194  198
-    ## 198   198  198
-    ## 199   199  198
-    ## 200   200  198
-    ## 461   461  198
-    ## 190   190  199
-    ## 192   192  199
-    ## 194   194  199
-    ## 198   198  199
-    ## 199   199  199
-    ## 200   200  199
-    ## 142   142  200
-    ## 190   190  200
-    ## 192   192  200
-    ## 194   194  200
-    ## 198   198  200
-    ## 199   199  200
-    ## 200   200  200
-    ## 461   461  200
-    ## 51     51  201
-    ## 201   201  201
-    ## 202   202  202
-    ## 203   203  203
-    ## 204   204  204
-    ## 592   592  204
-    ## 205   205  205
-    ## 206   206  206
-    ## 601   601  206
-    ## 207   207  207
-    ## 208   208  208
-    ## 500   500  208
-    ## 209   209  209
-    ## 210   210  209
-    ## 214   214  209
-    ## 209   209  210
-    ## 210   210  210
-    ## 214   214  210
-    ## 211   211  211
-    ## 212   212  212
-    ## 213   213  213
-    ## 209   209  214
-    ## 210   210  214
-    ## 214   214  214
-    ## 215   215  215
-    ## 216   216  216
-    ## 217   217  217
-    ## 218   218  218
-    ## 219   219  219
-    ## 220   220  220
-    ## 221   221  221
-    ## 222   222  222
-    ## 223   223  223
-    ## 224   224  224
-    ## 149   149  225
-    ## 184   184  225
-    ## 225   225  225
-    ## 287   287  225
-    ## 339   339  225
-    ## 341   341  225
-    ## 344   344  225
-    ## 351   351  225
-    ## 353   353  225
-    ## 226   226  226
-    ## 227   227  227
-    ## 228   228  228
-    ## 229   229  229
-    ## 230   230  230
-    ## 231   231  231
-    ## 232   232  231
-    ## 231   231  232
-    ## 232   232  232
-    ## 233   233  233
-    ## 234   234  234
-    ## 235   235  235
-    ## 236   236  236
-    ## 237   237  237
-    ## 238   238  238
-    ## 239   239  239
-    ## 240   240  240
-    ## 241   241  241
-    ## 242   242  242
-    ## 243   243  243
-    ## 244   244  244
-    ## 246   246  244
-    ## 247   247  244
-    ## 569   569  244
-    ## 632   632  244
-    ## 245   245  245
-    ## 244   244  246
-    ## 246   246  246
-    ## 244   244  247
-    ## 247   247  247
-    ## 569   569  247
-    ## 248   248  248
-    ## 249   249  249
-    ## 559   559  249
-    ## 250   250  250
-    ## 251   251  251
-    ## 252   252  252
-    ## 253   253  253
-    ## 254   254  254
-    ## 255   255  255
-    ## 256   256  256
-    ## 257   257  257
-    ## 258   258  257
-    ## 257   257  258
-    ## 258   258  258
-    ## 259   259  259
-    ## 260   260  260
-    ## 261   261  261
-    ## 262   262  262
-    ## 931   931  262
-    ## 263   263  263
-    ## 264   264  264
-    ## 265   265  265
-    ## 266   266  266
-    ## 267   267  267
-    ## 729   729  267
-    ## 268   268  268
-    ## 269   269  269
-    ## 270   270  270
-    ## 271   271  271
-    ## 272   272  272
-    ## 273   273  273
-    ## 274   274  274
-    ## 275   275  275
-    ## 276   276  276
-    ## 447   447  276
-    ## 858   858  276
-    ## 277   277  277
-    ## 278   278  278
-    ## 279   279  278
-    ## 281   281  278
-    ## 282   282  278
-    ## 283   283  278
-    ## 278   278  279
-    ## 279   279  279
-    ## 281   281  279
-    ## 282   282  279
-    ## 283   283  279
-    ## 280   280  280
-    ## 278   278  281
-    ## 279   279  281
-    ## 281   281  281
-    ## 282   282  281
-    ## 283   283  281
-    ## 278   278  282
-    ## 279   279  282
-    ## 281   281  282
-    ## 282   282  282
-    ## 283   283  282
-    ##  [ reached getOption("max.print") -- omitted 1112 rows ]
 
 ``` r
 print(coffee_tweets[[659]])
 ```
 
-    ## [1] "It's Saturday morning, so you're probably a bit hungover yeah? Do not worry, we've got the cure for you! #Coffee"
+    ## [1] "Oh gracious #coffee how would I get up withou you? #coffeefiend"
 
 ``` r
 print(coffee_tweets[[292]])
 ```
 
-    ## [1] "Does your coffee help you #loseweight? Get a sample at #weightloss #coffee"
+    ## [1] "Amora Coffee - $2.95 offer &gt;&gt;\n\n#gourmet #glutenfree #vegan #coffee #veganfood #coffeescrub"
 
 So really very similar...
 
@@ -1725,174 +1160,174 @@ and we can extract the values of the matrix with
 cosine_dist_mat[y]
 ```
 
-    ##    [1] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##    [7] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##    [1] 1.0000000 1.0000000 1.0000000 1.0000000 0.8499777 1.0000000
+    ##    [7] 1.0000000 0.9186893 1.0000000 0.9186893 1.0000000 1.0000000
     ##   [13] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##   [19] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##   [25] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##   [31] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##   [37] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##   [43] 1.0000000 1.0000000 1.0000000 0.5780789 1.0000000 1.0000000
-    ##   [49] 1.0000000 1.0000000 0.9009366 1.0000000 1.0000000 1.0000000
-    ##   [55] 1.0000000 0.8113901 1.0000000 1.0000000 1.0000000 1.0000000
-    ##   [61] 1.0000000 1.0000000 0.7985142 1.0000000 0.7971099 0.5252309
-    ##   [67] 0.6552737 0.5059945 1.0000000 1.0000000 1.0000000 1.0000000
-    ##   [73] 1.0000000 1.0000000 1.0000000 1.0000000 0.5453228 1.0000000
-    ##   [79] 1.0000000 1.0000000 0.9009366 1.0000000 1.0000000 1.0000000
+    ##   [37] 1.0000000 1.0000000 0.8499777 1.0000000 1.0000000 1.0000000
+    ##   [43] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##   [49] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##   [55] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##   [61] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##   [67] 1.0000000 0.8729078 1.0000000 1.0000000 1.0000000 1.0000000
+    ##   [73] 0.5816376 0.6528222 0.5816376 0.6528222 0.5816376 0.6528222
+    ##   [79] 0.5816376 0.6528222 1.0000000 1.0000000 1.0000000 1.0000000
     ##   [85] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##   [91] 1.0000000 1.0000000 1.0000000 0.8847583 1.0000000 0.8847583
+    ##   [91] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##   [97] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [103] 1.0000000 1.0000000 0.5747610 0.5455130 1.0000000 1.0000000
+    ##  [103] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [109] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [115] 1.0000000 1.0000000 0.6807897 1.0000000 1.0000000 1.0000000
-    ##  [121] 0.6807897 1.0000000 0.6807897 0.6807897 1.0000000 1.0000000
-    ##  [127] 1.0000000 1.0000000 0.9355991 1.0000000 1.0000000 1.0000000
+    ##  [115] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [121] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [127] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [133] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [139] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [145] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [151] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [157] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [163] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [169] 1.0000000 1.0000000 1.0000000 0.8322613 1.0000000 1.0000000
-    ##  [175] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.7985142
-    ##  [181] 1.0000000 0.7971099 0.5252309 0.6552737 0.5059945 1.0000000
+    ##  [169] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [175] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [181] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [187] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [193] 0.7985142 0.7985142 1.0000000 0.7985142 0.7623418 0.5023215
-    ##  [199] 1.0000000 1.0000000 1.0000000 0.7985142 1.0000000 0.7971099
-    ##  [205] 0.5252309 0.6552737 0.5059945 1.0000000 1.0000000 1.0000000
-    ##  [211] 0.7971099 0.7971099 0.7623418 0.7971099 1.0000000 0.5224589
-    ##  [217] 1.0000000 1.0000000 1.0000000 0.9355991 1.0000000 1.0000000
-    ##  [223] 0.5252309 0.5252309 0.5023215 0.5252309 1.0000000 0.5699403
-    ##  [229] 0.5566438 0.6539572 0.5735905 0.5678209 1.0000000 1.0000000
-    ##  [235] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [241] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [193] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [199] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [205] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [211] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [217] 1.0000000 1.0000000 1.0000000 1.0000000 0.8729078 1.0000000
+    ##  [223] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [229] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.9030086
+    ##  [235] 0.9030086 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [241] 1.0000000 1.0000000 1.0000000 1.0000000 0.8729078 0.8729078
     ##  [247] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [253] 1.0000000 1.0000000 1.0000000 0.5326942 0.5087987 1.0000000
-    ##  [259] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [253] 1.0000000 1.0000000 1.0000000 0.6251912 0.5246205 0.6172272
+    ##  [259] 0.5562915 0.5109227 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [265] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [271] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [271] 1.0000000 1.0000000 1.0000000 0.5323537 1.0000000 1.0000000
     ##  [277] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [283] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [289] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [295] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [301] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [307] 0.5414174 1.0000000 1.0000000 0.6552737 0.6552737 0.6552737
-    ##  [313] 0.5699403 1.0000000 0.8379020 0.7127685 0.6251743 0.5122376
-    ##  [319] 0.6188859 0.5229224 1.0000000 0.5566438 0.8379020 1.0000000
-    ##  [325] 0.6961399 0.6208430 0.5002872 0.6044475 0.5107228 1.0000000
-    ##  [331] 0.5059945 0.5059945 0.5059945 0.6539572 0.7127685 0.6961399
-    ##  [337] 1.0000000 0.7173335 0.5877483 0.7101180 0.6154253 0.5057279
-    ##  [343] 0.7840057 1.0000000 1.0000000 1.0000000 0.5735905 0.6251743
-    ##  [349] 0.6208430 0.7173335 1.0000000 0.5308004 0.6228496 0.5262715
-    ##  [355] 0.5122376 0.5002872 0.5877483 0.5308004 1.0000000 0.8276769
-    ##  [361] 0.5678209 0.6188859 0.6044475 0.7101180 0.6228496 0.8276769
-    ##  [367] 1.0000000 0.5209779 0.5453228 1.0000000 1.0000000 1.0000000
-    ##  [373] 1.0000000 1.0000000 1.0000000 1.0000000 0.8124207 1.0000000
-    ##  [379] 1.0000000 0.8737549 1.0000000 0.9123661 0.9005015 0.9123661
-    ##  [385] 1.0000000 0.9169851 1.0000000 1.0000000 1.0000000 0.9005015
-    ##  [391] 0.9169851 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [307] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [313] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [319] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [325] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [331] 1.0000000 1.0000000 1.0000000 1.0000000 0.5323537 1.0000000
+    ##  [337] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [343] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [349] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [355] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [361] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [367] 1.0000000 1.0000000 1.0000000 1.0000000 0.5452203 1.0000000
+    ##  [373] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [379] 1.0000000 1.0000000 1.0000000 0.6251912 1.0000000 0.5053107
+    ##  [385] 0.5328757 0.5358159 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [391] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [397] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [403] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [409] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [415] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [421] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [427] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [433] 0.5093740 0.6084673 0.6220686 0.5541926 1.0000000 0.5093740
-    ##  [439] 1.0000000 0.6084673 1.0000000 0.5260713 1.0000000 1.0000000
-    ##  [445] 0.7981151 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [451] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [457] 1.0000000 1.0000000 1.0000000 1.0000000 0.6283654 1.0000000
-    ##  [463] 1.0000000 1.0000000 1.0000000 1.0000000 0.5144751 1.0000000
-    ##  [469] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [475] 1.0000000 1.0000000 0.8906475 1.0000000 1.0000000 1.0000000
-    ##  [481] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [487] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [493] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [421] 1.0000000 0.7865556 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [427] 0.8400054 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [433] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [439] 1.0000000 1.0000000 0.5452203 1.0000000 1.0000000 0.8091072
+    ##  [445] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [451] 1.0000000 1.0000000 1.0000000 0.8400054 1.0000000 1.0000000
+    ##  [457] 1.0000000 0.8400054 0.8400054 1.0000000 0.8400054 0.8400054
+    ##  [463] 0.8400054 1.0000000 1.0000000 0.8091072 1.0000000 1.0000000
+    ##  [469] 0.6966014 1.0000000 1.0000000 1.0000000 0.8400054 1.0000000
+    ##  [475] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [481] 1.0000000 1.0000000 1.0000000 1.0000000 0.5947452 0.8142355
+    ##  [487] 0.5947452 0.8142355 0.5947452 0.8142355 0.5947452 0.8142355
+    ##  [493] 1.0000000 0.6966014 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [499] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [505] 1.0000000 1.0000000 1.0000000 1.0000000 0.7965334 1.0000000
-    ##  [511] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [517] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [505] 1.0000000 1.0000000 1.0000000 0.5816376 0.5947452 1.0000000
+    ##  [511] 0.5816376 0.5947452 0.7244077 0.5816376 0.5947452 0.7244077
+    ##  [517] 0.5816376 0.5947452 0.7244077 0.5816376 0.5947452 1.0000000
     ##  [523] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [529] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [535] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [541] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [541] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.8400054
     ##  [547] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [553] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [559] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.7571570
+    ##  [559] 1.0000000 1.0000000 0.7865556 1.0000000 1.0000000 1.0000000
     ##  [565] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [571] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [577] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [583] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [589] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [595] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [601] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [607] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [613] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [619] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [625] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [631] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [595] 0.8517838 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [601] 0.5641865 0.5900809 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [607] 0.8517838 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [613] 1.0000000 0.5641865 1.0000000 0.7220599 1.0000000 0.6528222
+    ##  [619] 0.5816376 1.0000000 0.5816376 0.6528222 0.5816376 0.6528222
+    ##  [625] 0.5816376 0.6528222 1.0000000 1.0000000 1.0000000 0.5900809
+    ##  [631] 0.7220599 1.0000000 0.9030086 1.0000000 1.0000000 1.0000000
     ##  [637] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [643] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [649] 1.0000000 1.0000000 1.0000000 1.0000000 0.6784411 1.0000000
+    ##  [643] 1.0000000 0.8591956 0.8591956 1.0000000 1.0000000 1.0000000
+    ##  [649] 1.0000000 1.0000000 1.0000000 1.0000000 0.8400054 1.0000000
     ##  [655] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [661] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [667] 0.9579119 1.0000000 1.0000000 1.0000000 0.9579119 0.8322613
-    ##  [673] 1.0000000 0.9579119 0.9579119 1.0000000 1.0000000 1.0000000
-    ##  [679] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [685] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [691] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [697] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.5713227
+    ##  [667] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [673] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [679] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.8142355
+    ##  [685] 0.5947452 1.0000000 0.5947452 0.8142355 0.5947452 0.8142355
+    ##  [691] 0.5947452 0.8142355 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [697] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [703] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [709] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [715] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [721] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [727] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [733] 0.7965334 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [733] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [739] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [745] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [751] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [757] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [763] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [769] 1.0000000 1.0000000 0.5747610 1.0000000 1.0000000 0.8906475
-    ##  [775] 1.0000000 0.8906475 1.0000000 0.6154253 1.0000000 0.6545889
-    ##  [781] 0.6277790 1.0000000 1.0000000 1.0000000 1.0000000 0.5224589
-    ##  [787] 0.5057279 0.6545889 1.0000000 0.5181023 1.0000000 1.0000000
-    ##  [793] 1.0000000 1.0000000 0.9951305 1.0000000 1.0000000 1.0000000
-    ##  [799] 0.5229224 0.5107228 0.7840057 0.5262715 0.5209779 0.6277790
-    ##  [805] 0.5181023 1.0000000 0.5616957 1.0000000 1.0000000 1.0000000
-    ##  [811] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [817] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [823] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [829] 1.0000000 1.0000000 0.5616957 1.0000000 1.0000000 1.0000000
+    ##  [745] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.5246205
+    ##  [751] 0.5053107 1.0000000 1.0000000 0.5790108 0.5876255 0.7952789
+    ##  [757] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.5816376
+    ##  [763] 0.5947452 0.7244077 0.5816376 0.5947452 1.0000000 0.5816376
+    ##  [769] 0.5947452 0.7244077 0.5816376 0.5947452 0.7244077 0.5816376
+    ##  [775] 0.5947452 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [781] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [787] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [793] 1.0000000 1.0000000 0.5790108 1.0000000 0.5907863 0.5847611
+    ##  [799] 0.5790108 1.0000000 1.0000000 1.0000000 0.5876255 0.5907863
+    ##  [805] 1.0000000 0.5934613 0.5876255 1.0000000 1.0000000 1.0000000
+    ##  [811] 1.0000000 1.0000000 1.0000000 0.8425006 1.0000000 1.0000000
+    ##  [817] 0.8425006 0.8425006 0.8425006 1.0000000 0.7952789 0.5847611
+    ##  [823] 0.5934613 1.0000000 0.7952789 1.0000000 1.0000000 1.0000000
+    ##  [829] 1.0000000 1.0000000 1.0000000 0.5790108 0.5876255 0.7952789
     ##  [835] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [841] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [847] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [853] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.9109665
-    ##  [859] 0.9109665 1.0000000 1.0000000 1.0000000 1.0000000 0.8737549
-    ##  [865] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [853] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [859] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [865] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.7070681
     ##  [871] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [877] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [883] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [889] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [895] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [901] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [883] 1.0000000 1.0000000 1.0000000 1.0000000 0.9030086 1.0000000
+    ##  [889] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.6528222
+    ##  [895] 0.5816376 0.6528222 0.5816376 1.0000000 0.5816376 0.6528222
+    ##  [901] 0.5816376 0.6528222 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [907] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [913] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [919] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [925] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [931] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [937] 0.7981151 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [943] 0.5512571 1.0000000 1.0000000 1.0000000 0.9951305 1.0000000
-    ##  [949] 1.0000000 0.6220686 0.5260713 1.0000000 1.0000000 1.0000000
+    ##  [937] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [943] 1.0000000 0.6404088 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [949] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [955] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [961] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [961] 0.9146023 1.0000000 0.9146023 1.0000000 1.0000000 1.0000000
     ##  [967] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [973] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [979] 1.0000000 1.0000000 1.0000000 0.8113901 1.0000000 1.0000000
+    ##  [979] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
     ##  [985] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [991] 1.0000000 0.8124207 1.0000000 1.0000000 1.0000000 1.0000000
+    ##  [991] 0.9262669 1.0000000 0.9262669 1.0000000 1.0000000 1.0000000
     ##  [997] 1.0000000 1.0000000 1.0000000 1.0000000
-    ##  [ reached getOption("max.print") -- omitted 612 entries ]
+    ##  [ reached getOption("max.print") -- omitted 462 entries ]
 
 Another way of doing TF-IDF
 ===========================
@@ -1908,33 +1343,33 @@ inspect(dtm_tfxidf[1:10, 1001:1010])
     ## <<DocumentTermMatrix (documents: 10, terms: 10)>>
     ## Non-/sparse entries: 0/100
     ## Sparsity           : 100%
-    ## Maximal term length: 22
+    ## Maximal term length: 16
     ## Weighting          : term frequency - inverse document frequency (normalized) (tf-idf)
     ## Sample             :
     ##     Terms
-    ## Docs #musicfestival #musician #musiclover #musthavemycaffeinefix
-    ##   1               0         0           0                      0
-    ##   10              0         0           0                      0
-    ##   2               0         0           0                      0
-    ##   3               0         0           0                      0
-    ##   4               0         0           0                      0
-    ##   5               0         0           0                      0
-    ##   6               0         0           0                      0
-    ##   7               0         0           0                      0
-    ##   8               0         0           0                      0
-    ##   9               0         0           0                      0
+    ## Docs #newrock1041 #newstreet #newweek #newyork #newyorker #nhv #nice
+    ##   1             0          0        0        0          0    0     0
+    ##   10            0          0        0        0          0    0     0
+    ##   2             0          0        0        0          0    0     0
+    ##   3             0          0        0        0          0    0     0
+    ##   4             0          0        0        0          0    0     0
+    ##   5             0          0        0        0          0    0     0
+    ##   6             0          0        0        0          0    0     0
+    ##   7             0          0        0        0          0    0     0
+    ##   8             0          0        0        0          0    0     0
+    ##   9             0          0        0        0          0    0     0
     ##     Terms
-    ## Docs #mybabygirl #myfave #myhappyplace #myhome #mylittlegirl #mypeople
-    ##   1            0       0             0       0             0         0
-    ##   10           0       0             0       0             0         0
-    ##   2            0       0             0       0             0         0
-    ##   3            0       0             0       0             0         0
-    ##   4            0       0             0       0             0         0
-    ##   5            0       0             0       0             0         0
-    ##   6            0       0             0       0             0         0
-    ##   7            0       0             0       0             0         0
-    ##   8            0       0             0       0             0         0
-    ##   9            0       0             0       0             0         0
+    ## Docs #nickmunrodesign #nitrocoldbrew #nofilter
+    ##   1                 0              0         0
+    ##   10                0              0         0
+    ##   2                 0              0         0
+    ##   3                 0              0         0
+    ##   4                 0              0         0
+    ##   5                 0              0         0
+    ##   6                 0              0         0
+    ##   7                 0              0         0
+    ##   8                 0              0         0
+    ##   9                 0              0         0
 
 Keep Tweets Metadata
 --------------------
@@ -1979,7 +1414,7 @@ text_corpus[[1]][1]
 ```
 
     ## $content
-    ## [1] "  know  make  dilorenzocaffe doughboxdiner doughbox coffeetime httpstcoqmi8pfixzc"
+    ## [1] " latest mos  news httpstcokidtriclbg thanks  poorlilitgirl bloggerswales kuldeepnegi80  monday"
 
 ``` r
 # Print metadata
@@ -1987,7 +1422,7 @@ text_corpus[[1]][2]
 ```
 
     ## $meta
-    ##   id      : 876338214482714624
-    ##   author  : DoughboxDiner
-    ##   date    : 2017-06-18 07:18:06
+    ##   id      : 881881964743204865
+    ##   author  : MoLovesCoffee
+    ##   date    : 2017-07-03 14:26:59
     ##   language: en

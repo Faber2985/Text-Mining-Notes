@@ -15,6 +15,7 @@ The notes you are reading now are what I learned from courses, projects and othe
 As a dataset we will use tweets. I decided I could download some real tweets by myself. This could prove an interesting challenge and could give some interesting insights if we download the right tweets. To do this I followed the instructions on this websites
 
 [Link on twitter download 1](https://www.credera.com/blog/business-intelligence/twitter-analytics-using-r-part-1-extract-tweets/)
+
 [Link on twitter download 2](http://thinktostart.com/twitter-authentification-with-r/)
 
 # Let's get the tweets
@@ -29,7 +30,8 @@ Now to be able to download tweets you need to have a twitter account and authori
 
 ```{r}
 
-secrets <- read.csv("/Users/umberto/Documents/Passwords and Secrets/twitter-keys.csv", stringsAsFactors = FALSE, header = TRUE, sep =",")
+secrets <- read.csv("/Users/umberto/Documents/Passwords and Secrets/twitter-keys.csv", 
+                    stringsAsFactors = FALSE, header = TRUE, sep =",")
 
 api_key <- secrets$api_key
 api_secret <- secrets$api_secret
@@ -66,7 +68,7 @@ It is interested to see how many parameters we get from the search
 ```{r}
 str(c_tweets[[1]])
 ```
-So there is quite some possibilities here. But we are not actually interested in twitters now, but just in the text `tweetsText`. 
+So there is quite some possibilities here. But we are not actually interested in that here, but just in the text `tweetsText`. 
 (check for example as reference this [stackoverflow post](http://stackoverflow.com/questions/14549305/searchtwitter-timestamps)).
 
 ## Tea tweets
@@ -83,7 +85,7 @@ no.of.tweets <- 1000
 t_tweets <- searchTwitter(search.string, n=no.of.tweets, lang="en")
 ```
 Now we need to access the text of the tweets. So we do it in this way (we also need to clean up the tweets from special
-characters that for now we don't need, like emoticons with teh `sapply` function.)
+characters that for now we don't need, like emoticons with the `sapply` function.)
 ```{r}
 tea_tweets = sapply(t_tweets, function(t) t$getText())
 
@@ -202,7 +204,7 @@ and the original one
 ```{r}
 coffee_corpus[[227]][1]
 ```
-So we have removed special characters, punctuation and so on. Not all the words make much sense really (for example twitter usernames) but it should not be a problem since we don't expect to see them very often in our corpus.
+So we have removed special characters, punctuation and so on. Not all the words make always much sense really (for example twitter usernames) but it should not be a problem since we don't expect to see them very often in our corpus.
 
 ## Make a document-term matrix
 
@@ -288,10 +290,15 @@ tf10 <- as.data.frame(tf[1:10,])
 # x axis alphabetically
 tf10 <- mutate(tf10, words = factor(words, words))
 
-ggplot(tf10, aes(x = tf10$words , y = tf10$term_frequency   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
+ggplot(tf10, aes(x = tf10$words , y = tf10$term_frequency   )) + 
+  geom_bar(stat = "identity", fill = "tan", col = "black")+ 
+  theme_grey()+theme(text = element_text(size=16),
+                     axis.title.x=element_blank(),
+                     axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+
+  ylab("Words Frequency") 
 ```
 
-Note that the knitr button command don't work from Rstudio if you want to use `knitr`. So the solution is to do 
+Note that the knitr button command don't work from Rstudio with these libraries (Java problems on my system), if you want to use `knitr`. So the solution is to do 
 it from the console with the following commands
 ```{r, eval=FALSE}
 library(rmarkdown)
@@ -307,11 +314,17 @@ library(qdap)
 Let's build a word frequency plot with `qdap` library (note that we are not working with our cleaned up corpus, and therefore we will see different words).
 
 ```{r}
-frequency <- freq_terms(coffee_tweets, top = 10, at.least = 3, stopwords = "Top200Words")
+frequency <- freq_terms(coffee_tweets, top = 10, at.least = 3, 
+                        stopwords = "Top200Words")
 
 frequency <- mutate(frequency, WORD = factor(WORD, WORD))
 
-ggplot(frequency, aes(x = frequency$WORD , y = frequency$FREQ   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
+ggplot(frequency, aes(x = frequency$WORD , y = frequency$FREQ   )) + 
+  geom_bar(stat = "identity", fill = "tan", col = "black")+ 
+  theme_grey()+theme(text = element_text(size=16),  
+                     axis.title.x=element_blank(),
+                     axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+
+  ylab("Words Frequency") 
 ```
 Now let's remove more stopwords (now it looks similar to what we obtained at the beginning)
 
@@ -320,7 +333,13 @@ frequency2 <- freq_terms(coffee_tweets, top = 10, at.least = 3, stopwords = c(tm
 
 frequency2 <- mutate(frequency2, WORD = factor(WORD, WORD))
 
-ggplot(frequency2, aes(x = frequency2$WORD , y = frequency2$FREQ   )) + geom_bar(stat = "identity", fill = "tan", col = "black")+ theme_grey()+theme(text = element_text(size=16),  axis.title.x=element_blank(),axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+ylab("Words Frequency") 
+ggplot(frequency2, aes(x = frequency2$WORD , y = frequency2$FREQ   )) + 
+  geom_bar(stat = "identity", fill = "tan", col = "black")+ 
+  theme_grey()+
+  theme(text = element_text(size=16),  
+        axis.title.x=element_blank(),
+        axis.text.x=element_text(angle=90,hjust=1,vjust=0.5))+
+  ylab("Words Frequency") 
 ```
 
 ## Wordclouds
@@ -367,7 +386,9 @@ wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 50, colors = "red")
 ### Improve word colours
 
 ```{r}
-wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = c("grey80", "darkgoldenrod1", "tomato"))
+wordcloud(coffee_freqs$term, coffee_freqs$num, 
+          max.words = 100, 
+          colors = c("grey80", "darkgoldenrod1", "tomato"))
 ```
 
 Now let's improve even more on the colors. To do that we will need to use RColorBrewer.
@@ -412,7 +433,10 @@ Weel it seems that people talking about coffee are talking also about "morning".
 Sometimes not all the words can be plotted. In this case the only solutions are to reduce the number
 of words or to reduce the scale of the words themselves. For example
 ```{r}
-wordcloud(coffee_freqs$term, coffee_freqs$num, max.words = 100, colors = purple_orange, scale = c(2,0.3))
+wordcloud(coffee_freqs$term, coffee_freqs$num, 
+          max.words = 100, 
+          colors = purple_orange, 
+          scale = c(2,0.3))
 ```
 
 
@@ -436,7 +460,11 @@ head(freq.df)
 ```
 Now we can plot the wordcloud
 ```{r}
-wordcloud(freq.df$word, freq.df$freq, max.words = 50, random.order = F, colors = purple_orange, scale = c(4,0.7))
+wordcloud(freq.df$word, freq.df$freq, 
+          max.words = 50, 
+          random.order = F, 
+          colors = purple_orange, 
+          scale = c(4,0.7))
 ```
 
 Apparently not many bigrams appear so frequently. The only one is "good morning". It makes again sense...
@@ -458,8 +486,13 @@ head(freq.df)
 
 ```
 ```{r}
-wordcloud(freq.df$word, freq.df$freq, max.words = 40, random.order = F, colors = purple_orange, scale = c(3,0.7))
+wordcloud(freq.df$word, freq.df$freq, 
+          max.words = 40, 
+          random.order = F, 
+          colors = purple_orange, 
+          scale = c(2,0.7))
 ```
+
 Words are long so not all could be written in the plot. You have to choose between something that is not readable and something that has less words...
 
 # Common Words between Corpora
@@ -604,6 +637,7 @@ Now let's work on the appearance
 hcd <- branches_attr_by_labels(hcd, c("mondaymorning", "work"), "red")
 plot(hcd, main = "Better Dendrogram")
 ```
+
 Now let's add rectangular shapes around the clusters
 ```{r}
 # Add cluster rectangles 
@@ -666,7 +700,8 @@ coffee_cosine_dist_mat[1:5,1:5]
 We can do the same calculations using the fact we have sparse matrices
 ```{r}
 library(slam)
-cosine_dist_mat <- crossprod_simple_triplet_matrix(coffee_tdm)/(sqrt(col_sums(coffee_tdm^2) %*% t(col_sums(coffee_tdm^2))))
+cosine_dist_mat <- crossprod_simple_triplet_matrix(coffee_tdm)/
+  (sqrt(col_sums(coffee_tdm^2) %*% t(col_sums(coffee_tdm^2))))
 ```
 
 ```{r}
@@ -681,8 +716,11 @@ print(coffee_tweets[[5]])
 
 # Bag of words
 ```{r}
-my.tdm <- TermDocumentMatrix(coffee_corpus, control = list(weighting = weightTfIdf))
-my.dtm <- DocumentTermMatrix(coffee_corpus, control = list(weighting = weightTfIdf, stopwords = TRUE))
+my.tdm <- TermDocumentMatrix(coffee_corpus, 
+                             control = list(weighting = weightTfIdf))
+my.dtm <- DocumentTermMatrix(coffee_corpus, 
+                             control = list(weighting = weightTfIdf, 
+                                            stopwords = TRUE))
 inspect(my.dtm)
 ```
 Let's find (for example) all words that appear twice  in any document
@@ -690,13 +728,13 @@ Let's find (for example) all words that appear twice  in any document
 findFreqTerms(my.tdm, 200)
 ```
 ```{r}
-cosine_dist_mat <- crossprod_simple_triplet_matrix(my.tdm)/(sqrt(col_sums(my.tdm^2) %*% t(col_sums(my.tdm^2))))
+cosine_dist_mat <- crossprod_simple_triplet_matrix(my.tdm)/
+  (sqrt(col_sums(my.tdm^2) %*% t(col_sums(my.tdm^2))))
 cosine_dist_mat[1:5,1:5]
 ```
 ```{r}
 y <- which(cosine_dist_mat>0.5, arr.in = TRUE)
 str(y)
-y
 ```
 ```{r}
 print(coffee_tweets[[659]])
